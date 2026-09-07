@@ -1,0 +1,81 @@
+# Sivyer 中转站文档（Astro Starlight）
+
+面向 [www.sivyer.cc](https://www.sivyer.cc) 的 NewAPI 中转站使用文档站点。
+
+- 框架：[Astro Starlight](https://starlight.astro.build/)
+- 特点：左侧多篇导航 + 长文右侧目录跳转 + Markdown 维护
+
+## 本地开发
+
+```bash
+npm install
+npm run dev
+```
+
+浏览器打开提示的本地地址（默认 `http://localhost:4321`）。
+
+> 若本机全局 npm 缓存权限异常，可用项目内缓存：
+>
+> ```bash
+> export NPM_CONFIG_CACHE="$(pwd)/.npm-cache"
+> npm install
+> ```
+
+## 如何更新文档（日常维护）
+
+1. 在 `src/content/docs/` 下编辑或新增 `.md` / `.mdx`
+2. 新页面需带 frontmatter：
+
+```md
+---
+title: 页面标题
+description: 一句话说明
+---
+```
+
+3. 若是新页面，还要在 `astro.config.mjs` 的 `sidebar` 里加一项
+4. 长文用 `##` / `###` 写标题，右侧会自动出现「本页目录」并可跳转
+5. 截图建议放 `src/assets/` 或 `public/images/`，在 Markdown 中引用
+
+## 构建
+
+```bash
+npm run build
+```
+
+产物在 `dist/`，可用于 Cloudflare Pages。
+
+## 部署到 Cloudflare Pages（建议）
+
+1. 把本仓库推到 GitHub（已完成后可跳过）
+2. Cloudflare Dashboard → Workers & Pages → Create → Connect to Git
+3. 构建设置：
+   - **Framework preset:** Astro（或 None）
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Node version:** `22`（或 `20`）
+4. 可选绑定自定义域名，例如 `docs.sivyer.cc`
+
+也可使用 Wrangler：
+
+```bash
+npx wrangler pages deploy dist
+```
+
+## 目录结构
+
+```text
+src/content/docs/
+  index.mdx                          # 首页
+  getting-started/                   # 入门多篇
+  tools/                             # 工具安装
+  configure/                         # 配置方法
+  cherry-studio/image-generation.md  # 生图长文（含 4K）
+  faq/                               # 常见问题
+  reference/                         # 速查附录
+astro.config.mjs                     # 站点标题、侧边栏、中文语言等
+```
+
+## 许可证
+
+文档内容归站点维护者所有；框架部分遵循各自开源许可证。

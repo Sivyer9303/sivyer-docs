@@ -1,0 +1,44 @@
+---
+title: Sivyer 中转站文档
+description: Sivyer NewAPI 中转站使用文档首页。从注册、创建 Key，到工具配置与 Cherry Studio 生图。
+template: splash
+hero:
+  tagline: 面向小白的 NewAPI 中转站图文教程。左侧目录切换篇章，长文右侧大纲一键跳转。
+  actions:
+    - text: 从这里开始
+      link: /getting-started/overview/
+      icon: right-arrow
+    - text: 打开中转站
+      link: https://www.sivyer.cc
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## 快速入口
+
+<CardGrid stagger>
+	<Card title="注册与登录" icon="rocket">
+		打开 [www.sivyer.cc](https://www.sivyer.cc)，完成注册并确认余额。
+		查看 [注册与登录](/getting-started/register/)。
+	</Card>
+	<Card title="创建 API Key" icon="approve-check">
+		在控制台创建密钥，并按用途选择正确分组。
+		查看 [创建 Key 与分组](/getting-started/create-key/)。
+	</Card>
+	<Card title="配置客户端" icon="setting">
+		用 Cherry Studio / CC Switch 一键配置，或自行手改。
+		查看 [配置中转站](/configure/)。
+	</Card>
+	<Card title="Cherry Studio 生图" icon="document">
+		设置分辨率、质量、比例；默认绘画不出 4K 时用手动参数。
+		查看 [生图详解](/cherry-studio/image-generation/)。
+	</Card>
+</CardGrid>
+
+## 维护说明
+
+- 文档源文件在仓库 `src/content/docs/` 下，改 Markdown / MDX 即可更新。
+- 新增一篇文档：新建 `.md` 文件，并在 `astro.config.mjs` 的 `sidebar` 里加一项。
+- 长文会自动生成右侧目录（On this page），点击即可跳转到对应标题。

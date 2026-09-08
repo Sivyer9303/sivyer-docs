@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img" aria-label="DeepChat-01-Provider配置">
+  <rect width="960" height="320" fill="#f3f4f6"/>
+  <rect x="24" y="24" width="912" height="272" rx="12" fill="#ffffff" stroke="#9ca3af" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="480" y="120" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="26" fill="#4b5563">【截图占位】点击可替换</text>
+  <text x="480" y="168" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="18" fill="#1d4ed8">DeepChat-01-Provider配置.png</text>
+  <text x="480" y="210" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="14" fill="#6b7280">本地 dev 下粘贴截图后会自动保存为同名 PNG</text>
+</svg>

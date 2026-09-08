@@ -16,7 +16,7 @@ const {
 	title = '推荐 API 服务',
 	href = 'https://www.sivyer.cc',
 	cta = '打开 Sivyer 中转站',
-	note = '本文为通用 AI 工具教程。若你还没有可用的 API 服务，可使用下方推荐站点获取 Key 后继续配置。访问推荐站点需自备魔法。',
+	note = '本文为通用 AI 工具教程。若你还没有可用的 API 服务，可使用下方推荐站点获取 Key 后继续配置。',
 } = Astro.props;
 ---
 
@@ -29,7 +29,6 @@ const {
 			<a class="sponsor-banner__cta" href={href} target="_blank" rel="noopener noreferrer">
 				{cta}
 			</a>
-			<span class="sponsor-banner__hint">（需自备魔法）</span>
 			<code class="sponsor-banner__url">{href.replace(/^https?:\/\//, '')}</code>
 		</p>
 	</div>
@@ -61,11 +60,6 @@ const {
 	.sponsor-banner__cta {
 		font-weight: 600;
 		text-decoration: none;
-	}
-	.sponsor-banner__hint {
-		margin-left: 0.35rem;
-		font-size: 0.9em;
-		opacity: 0.85;
 	}
 	.sponsor-banner__url {
 		margin-left: 0.65rem;

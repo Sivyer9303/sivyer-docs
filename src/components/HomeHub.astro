@@ -1,0 +1,118 @@
+---
+const toolGroups = [
+	{
+		label: '编程助手',
+		caption: '把 API 接进日常开发环境',
+		items: [
+			['Claude Code', '/coding/claude-code/'],
+			['Codex CLI / 桌面版', '/coding/codex/'],
+			['Cursor', '/coding/cursor/'],
+			['Gemini CLI', '/coding/gemini-cli/'],
+		],
+	},
+	{
+		label: 'Agent 与管家',
+		caption: '多工具切换、自动化与长期任务',
+		items: [
+			['CC Switch', '/config-manager/cc-switch/'],
+			['Codex++', '/config-manager/codex-plus-plus/'],
+			['OpenClaw', '/agents/openclaw/'],
+			['OpenCode', '/agents/opencode/'],
+		],
+	},
+	{
+		label: '桌面客户端',
+		caption: '聊天、生图与统一模型管理',
+		items: [
+			['Cherry Studio', '/clients/cherry-studio/'],
+			['Cherry Studio 生图', '/clients/cherry-studio-image/'],
+			['Chatbox', '/clients/chatbox/'],
+			['DeepChat', '/clients/deepchat/'],
+		],
+	},
+];
+
+const steps = [
+	{
+		number: '01',
+		title: '先准备服务',
+		text: '拿到 Base URL、API Key 和可用额度。',
+		link: '/getting-started/get-api-service/',
+		linkText: '获取 API 服务',
+	},
+	{
+		number: '02',
+		title: '再配置工具',
+		text: '按你正在使用的客户端，照着截图完成设置。',
+		link: '/getting-started/overview/',
+		linkText: '查看配置总览',
+	},
+	{
+		number: '03',
+		title: '最后验证',
+		text: '用一次真实请求确认地址、Key 与模型都生效。',
+		link: '/getting-started/verify/',
+		linkText: '验证配置',
+	},
+];
+---
+
+<section class="home-hub" aria-labelledby="home-hub-title">
+	<div class="home-section-heading">
+		<div>
+			<p class="home-eyebrow">DOCUMENTATION MAP</p>
+			<h2 id="home-hub-title">按你的工作方式，直接找到入口</h2>
+		</div>
+		<a class="home-text-link" href="/reference/cheatsheet/">查看配置速查 <span aria-hidden="true">→</span></a>
+	</div>
+
+	<div class="home-tool-groups">
+		{toolGroups.map((group, groupIndex) => (
+			<section class="home-tool-group" aria-labelledby={`tool-group-${groupIndex}`}>
+				<div class="home-tool-group__heading">
+					<span class="home-tool-group__number">0{groupIndex + 1}</span>
+					<div>
+						<h3 id={`tool-group-${groupIndex}`}>{group.label}</h3>
+						<p>{group.caption}</p>
+					</div>
+				</div>
+				<ul>
+					{group.items.map(([label, href]) => (
+						<li><a href={href}>{label}<span aria-hidden="true">↗</span></a></li>
+					))}
+				</ul>
+			</section>
+		))}
+	</div>
+</section>
+
+<section class="home-path" aria-labelledby="home-path-title">
+	<div class="home-section-heading home-section-heading--path">
+		<div>
+			<p class="home-eyebrow">THE SHORTEST PATH</p>
+			<h2 id="home-path-title">三步，把请求跑通</h2>
+		</div>
+		<p class="home-muted">遇到报错时，回到对应步骤排查即可。</p>
+	</div>
+	<ol class="home-steps">
+		{steps.map((step) => (
+			<li>
+				<span class="home-step-number">{step.number}</span>
+				<div>
+					<h3>{step.title}</h3>
+					<p>{step.text}</p>
+					<a class="home-text-link" href={step.link}>{step.linkText} <span aria-hidden="true">→</span></a>
+				</div>
+			</li>
+		))}
+	</ol>
+</section>
+
+<section class="home-service" aria-labelledby="home-service-title">
+	<div>
+		<p class="home-eyebrow">NEED A BASE URL?</p>
+		<h2 id="home-service-title">还没有可用的 API 服务？</h2>
+		<p>本站教程默认使用 OpenAI 兼容接口。先在 Sivyer 获取 Key，再回来配置 Claude、Codex、Agent 或桌面客户端。</p>
+	</div>
+	<a class="home-service__button" href="/getting-started/get-api-service/">了解获取方式 <span aria-hidden="true">→</span></a>
+</section>

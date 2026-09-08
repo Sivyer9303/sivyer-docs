@@ -47,7 +47,7 @@ import SponsorBanner from '../../components/SponsorBanner.astro';
 1. 每页文首最多一次 `<SponsorBanner />`
 2. 商家注册/充值细节只写在 `getting-started/get-api-service`
 3. 工具正文禁止反复安利
-4. 所有可点击的推荐站点外链后方标注 `（需自备魔法）`（`SponsorBanner` 已默认带上）
+4. 推荐站点外链保持可点击；品牌推荐主要放在文首 Sponsored 与「如何获取 API 服务」页
 
 ## 侧边栏分组
 

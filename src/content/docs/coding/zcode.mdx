@@ -1,0 +1,99 @@
+---
+title: ZCode
+description: 安装智谱 ZCode，使用官方 GLM / Z.ai 套餐，或接入兼容中转网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想用 **图形界面 AI 编程助手**（类似 Claude Code / Codex 桌面体验），并主要跑 **GLM** 或其它中转兼容模型的用户。
+
+官网 / 下载：https://zcode.z.ai/cn  
+文档：https://zcode.z.ai/cn/docs  
+
+## 安装
+
+1. 打开 https://zcode.z.ai/cn ，下载对应系统安装包（macOS / Windows / Linux）  
+2. 安装并启动 **ZCode**  
+3. 按首次向导完成基本设置（可稍后迁移旧数据）
+
+ZCode 是桌面应用，**不依赖**本机 `npm install`（与 Claude Code CLI 不同）。
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **BigModel / Z.ai 账号登录** | 已有智谱 GLM Coding Plan 或 Z.ai Coding Plan |
+| **官方 API Key** | 直接用智谱开放平台 / Coding 专用 Key |
+| **自定义提供商（中转）** | 使用本站等兼容 Anthropic / OpenAI 协议的网关 |
+
+创建中转 Key 时，请选择含 **GLM（或你要在 ZCode 里用的模型线路）** 的分组，模型名以定价页为准。
+
+## 方式一：官方 GLM / Z.ai 套餐（推荐有套餐时）
+
+1. 打开 ZCode  
+2. 在欢迎页或对话框模型名 → **管理模型**，进入模型设置  
+3. 选择：
+   - **连接 BigModel**（国内 GLM Coding Plan），或  
+   - **连接 Z.ai**（海外 Coding Plan）  
+4. 浏览器完成账号授权  
+5. 回到 ZCode，在模型列表选用 GLM 编程模型，发一句测试  
+
+官方说明：https://zcode.z.ai/cn/docs/configuration  
+
+不想用套餐、改走 API Key 时：在对应供应商页切到 **API Key** 模式，并按官方文档填写 Coding 专用端点（不要误用通用端点）。
+
+## 方式二：自定义提供商接入中转
+
+适合把流量打到 `{{API_BASE_URL}}`，使用中转站上的 GLM 等兼容模型。
+
+### 前置
+
+- API Key（分组含你要用的模型线路）  
+- Base URL：常见 OpenAI 兼容地址为 `{{API_BASE_URL}}/v1`  
+- 若界面另有 Anthropic 地址栏：可填 `{{API_BASE_URL}}`（以你网关实际 Anthropic 兼容路径为准）  
+- 模型名：`{{MODEL_NAME}}`（与定价页完全一致，例如 GLM 系列模型 ID）
+
+### 操作步骤
+
+<Steps>
+
+1. 打开 ZCode，点击对话框中的模型名称 → **管理模型**（或设置 → 模型设置）
+2. 在左侧提供商列表底部点击 **添加提供商 / 自定义提供商**
+3. 填写名称，例如 `我的网关`
+4. 填写接口地址：
+   - **OpenAI 接口地址**：`{{API_BASE_URL}}/v1`
+   - **Anthropic 接口地址**（若有）：`{{API_BASE_URL}}` 或网关文档给出的 Anthropic 路径
+5. 填入 API Key
+6. **添加模型**：手动填写服务商列表中的模型 ID（可按需添加多条）
+7. 打开该提供商的 **启用** 开关并保存
+8. 回到对话，选用刚加的模型，发送：`请只回复：配置成功`
+
+</Steps>
+
+![ZCode：添加自定义提供商](/screenshots/ZCode-01-添加自定义提供商.png)
+
+![ZCode：对话成功](/screenshots/ZCode-02-对话成功.png)
+
+<Aside type="tip" title="模型名怎么填">
+	中转站定价页写什么，这里就填什么。同一自定义提供商下可添加多个模型条目，共用同一 Key（只要该 Key 的分组都包含它们）。
+</Aside>
+
+## 验证
+
+- 模型选择器能看到你添加的模型  
+- 对话能正常返回  
+- 故意填错 Key 应失败，改回后恢复  
+
+## 常见问题
+
+- **拉不到模型列表**：部分网关不支持自动发现；改为手动「添加模型」填 `{{MODEL_NAME}}`  
+- **401 / 403**：检查 Key、分组是否含该模型线路；Base URL 是否多写/少写 `/v1`  
+- **套餐与中转混用混乱**：同一时间只启用你要用的那条提供商，避免默认模型指错通道  
+- **官方 Coding 套餐额度不对**：确认用的是 Coding 专用端点，而不是通用开放平台端点（见官方文档）  
+
+更多官方说明：https://zcode.z.ai/cn/docs  

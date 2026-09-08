@@ -9,7 +9,7 @@ import { Steps, Aside } from '@astrojs/starlight/components';
 <SponsorBanner
 	title="推荐：Sivyer NewAPI 中转站"
 	cta="打开 www.sivyer.cc"
-	note="若你还没有可用的 API 服务，可使用 Sivyer 注册、充值并创建 Key，再回到本站继续配置各 AI 工具。站点对部分地区网络有访问限制，打开下方链接需自备魔法。"
+	note="若你还没有可用的 API 服务，可使用 Sivyer 注册、充值并创建 Key，再回到本站继续配置各 AI 工具。"
 />
 
 ## 你需要准备什么
@@ -25,10 +25,10 @@ import { Steps, Aside } from '@astrojs/starlight/components';
 
 | 项目 | 内容 |
 | --- | --- |
-| 网站 | [https://www.sivyer.cc](https://www.sivyer.cc)（需自备魔法） |
+| 网站 | [https://www.sivyer.cc](https://www.sivyer.cc) |
 | 类型 | 基于 NewAPI 的统一 API 网关 |
-| 常见能力 | Claude / OpenAI·Codex / Gemini / 国模等（以定价页为准） |
-| 适配工具 | Cherry Studio、CC Switch，以及本站列出的多数客户端 |
+| 常见能力 | Claude / OpenAI·Codex / Gemini / DeepSeek / GLM 等国模（以定价页为准） |
+| 适配工具 | Cherry Studio、CC Switch、ZCode、DeepSeek Harness，以及本站列出的多数客户端 |
 
 ![登录后的控制台首页（余额、菜单清晰可见）](/screenshots/获取API-01-控制台首页.png)
 
@@ -36,16 +36,30 @@ import { Steps, Aside } from '@astrojs/starlight/components';
 
 <Steps>
 
-1. 打开 [https://www.sivyer.cc](https://www.sivyer.cc)（需自备魔法）
+1. 打开 [https://www.sivyer.cc](https://www.sivyer.cc)
 2. 点击右上角登录 / 注册
 3. 完成账号创建并进入控制台（Console）
-4. 确认账户有可用余额；若为 0，按站点指引充值
 
 </Steps>
 
 ![注册/登录入口](/screenshots/获取API-02-登录入口.png)
 
+### 充值（卡密兑换）
+
+本站充值流程是：**先到卡网购买卡密，再到站内钱包兑换**，不是在站内直接在线支付。
+
+<Steps>
+
+1. 按站点指引打开卡网 / 发卡页面，购买所需面额的卡密（兑换码）
+2. 回到 Sivyer 控制台，进入 **钱包 / 充值 / 余额** 相关入口
+3. 选择 **兑换码 / 卡密兑换**，粘贴刚购买的兑换码并确认
+4. 确认余额已到账后再继续创建 Key
+
+</Steps>
+
 ![余额与充值入口](/screenshots/获取API-03-余额与充值.png)
+
+![站内兑换码 / 卡密兑换界面](/screenshots/获取API-04-兑换码.png)
 
 ### 拿到 Base URL
 

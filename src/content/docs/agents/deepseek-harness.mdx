@@ -1,0 +1,165 @@
+---
+title: DeepSeek Harness
+description: 安装 DeepSeek Harness（dsh），使用官方 DeepSeek，或接入中转站的 DeepSeek / GLM 等 OpenAI 兼容模型。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想用 DeepSeek 官方开源的 **Agent Harness（`dsh`）** 跑本地 Web UI / 无头任务，并希望接 **DeepSeek、GLM** 等模型（官方或中转）的用户。
+
+- 项目：https://github.com/deepseek-ai/deepseek-harness  
+- 文档：https://deepseek-harness.github.io/deepseek-harness/  
+
+## 安装
+
+需要较新的 Node.js（官方文档常见要求较新版本，如 **22.19+** 或 **24+**，具体以当前版本文档为准）。若还没有，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+**方式 A：零安装启动 Web UI（最快体验）**
+
+```bash
+npx @deepseek-ai/dsh web
+```
+
+默认打开 `http://127.0.0.1:3080`。
+
+**方式 B：全局安装**
+
+```bash
+npm install -g @deepseek-ai/dsh
+dsh web
+```
+
+验证：
+
+```bash
+npx @deepseek-ai/dsh --help
+# 或
+dsh --help
+```
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **DeepSeek 官方 Key** | 直接用 platform.deepseek.com 的 Key |
+| **自定义 Provider（中转）** | 使用 `{{API_BASE_URL}}`，跑中转上的 DeepSeek / GLM 等 |
+
+创建中转 Key 时选择含 **DeepSeek / GLM** 的分组；模型 ID 以定价页为准。
+
+## 方式一：官方 DeepSeek
+
+<Tabs>
+<TabItem label="环境变量 / .env">
+
+最直接的方式是在启动前导出（优先级最高）：
+
+```bash
+export DEEPSEEK_API_KEY="sk-你的官方密钥"
+npx @deepseek-ai/dsh web
+```
+
+也可以写入 `~/.dsh/.env` 作为兜底（优先级最低，且只在启动时读取一次）：
+
+```bash
+echo 'DEEPSEEK_API_KEY=sk-你的官方密钥' >> ~/.dsh/.env
+```
+
+> 优先级从高到低：启动时环境变量 → `~/.dsh/.credentials.yaml`（Models 页保存的 Key 存在这里）→ 项目目录 `.env` → `~/.dsh/.env`。启动后再 `export` 不会被读取，需重启。
+
+</TabItem>
+<TabItem label="Web UI">
+
+1. 启动 `dsh web`  
+2. 打开 Settings → **Models**  
+3. 在 DeepSeek 卡片填入官方 API Key 并保存  
+
+</TabItem>
+</Tabs>
+
+官方默认 provider 一般为 `deepseek-official`；具体默认模型以当前版本文档为准。
+
+## 方式二：自定义 Provider 接中转（DeepSeek / GLM）
+
+### 前置
+
+- API Key  
+- OpenAI 兼容地址：`{{API_BASE_URL}}/v1`  
+- 至少一个模型 ID：`{{MODEL_NAME}}`（例如 `deepseek-v4-flash`、`glm-4.7`，具体以定价页为准）
+
+### 在 Web UI 中添加（推荐）
+
+<Steps>
+
+1. 运行 `npx @deepseek-ai/dsh web`，打开 `http://127.0.0.1:3080`
+2. 进入 **Settings → Models**
+3. 选择 **Add a custom provider**（添加自定义提供商）
+4. 填写：
+   - **Provider ID**：小写且之后不建议改，例如 `my-gateway`
+   - **Base URL**：`{{API_BASE_URL}}/v1`
+   - **API protocol**：选 OpenAI Completions / `openai-completions`（以界面文案为准）
+   - **API Key**：你的中转 Key
+   - **Models**：添加 `{{MODEL_NAME}}`（可继续加 GLM、其它 DeepSeek 变体）
+5. 可选：点 **Fetch available models**；若网关不支持 `/models` 或 401，就手动填模型名
+6. 保存后，在模型选择器选用该模型，发一句测试
+
+</Steps>
+
+![DeepSeek Harness：Models 页添加自定义 Provider](/screenshots/DeepSeekHarness-01-添加自定义Provider.png)
+
+![DeepSeek Harness：选用中转模型对话成功](/screenshots/DeepSeekHarness-02-对话成功.png)
+
+### 可选：手改 `~/.dsh/settings.yaml`
+
+UI 保存后通常会写入设置。也可直接编辑（路径以本机 `$DSH_HOME`，默认 `~/.dsh`）：
+
+```yaml
+llm-pi-ai:
+  providers:
+    my-gateway:
+      apiKeyEnv: MY_GATEWAY_API_KEY
+      api: openai-completions
+      baseURL: "{{API_BASE_URL}}/v1"
+      # 不少中转站需要关掉 OpenAI 特有字段，否则会拒识
+      compat:
+        supportsDeveloperRole: false
+        maxTokensField: max_tokens
+      models:
+        - id: "{{MODEL_NAME}}"
+        # - id: "另一个GLM或DeepSeek模型名"
+```
+
+同时提供 Key（二选一即可）：
+
+```bash
+export MY_GATEWAY_API_KEY="sk-你的密钥"
+# 或写入 ~/.dsh/.env / 在 Models 页保存托管凭据
+```
+
+改完一般**下一轮请求即生效**，不必重启；不生效再重启 `dsh web`。
+
+<Aside type="caution" title="网关能连上但仍全部报错">
+	官方文档说明：部分兼容网关不接受 OpenAI 的 `developer` 角色或 `max_completion_tokens`。在自定义路由上加上文 `compat` 两项再试。
+</Aside>
+
+## 验证
+
+1. Web UI 能打开  
+2. 模型选择器出现你的自定义模型  
+3. 发送简单任务能返回结果  
+4. 服务商控制台有用量（可选）  
+
+## 常见问题
+
+- **Node 版本不够**：升级到官方要求的 22.19+ / 24+  
+- **MISSING_CREDENTIAL**：Key 未写入 Models 页或环境变量名与 `apiKeyEnv` 不一致  
+- **UNKNOWN_MODEL**：模型 ID 与定价页不一致，或未加到该 provider  
+- **Fetch models 401**：改为手动添加模型  
+- **只有推理模型失败**：优先设 `compat.supportsDeveloperRole: false`  
+- **想换回官方**：在 Models 里选用 `deepseek-official` 并填官方 Key  
+
+官方配置说明：https://deepseek-harness.github.io/deepseek-harness/en/guide/providers  

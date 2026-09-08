@@ -2,12 +2,15 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightThemeNova from 'starlight-theme-nova';
+import screenshotReplacerDev from './src/integrations/screenshot-replacer/index.ts';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://docs.sivyer.cc',
 	integrations: [
+		screenshotReplacerDev(),
 		starlight({
+			customCss: ['./src/styles/custom.css'],
 			plugins: [starlightThemeNova()],
 			title: 'AI 工具文档',
 			description:
@@ -52,6 +55,7 @@ export default defineConfig({
 						{ label: 'Codex 桌面版', slug: 'coding/codex-desktop' },
 						{ label: 'Cursor', slug: 'coding/cursor' },
 						{ label: 'Gemini CLI', slug: 'coding/gemini-cli' },
+						{ label: 'ZCode', slug: 'coding/zcode' },
 					],
 				},
 				{
@@ -60,6 +64,7 @@ export default defineConfig({
 						{ label: 'OpenClaw', slug: 'agents/openclaw' },
 						{ label: 'Hermes Agent', slug: 'agents/hermes' },
 						{ label: 'OpenCode', slug: 'agents/opencode' },
+						{ label: 'DeepSeek Harness', slug: 'agents/deepseek-harness' },
 					],
 				},
 				{

@@ -1,50 +1,30 @@
 ---
 title: AI 工具文档
-description: 通用 AI 工具使用文档：编程助手、Agent、桌面客户端与生图。文首提供可选 API 服务推荐。
+description: 从获取 API Key，到配置 Claude Code、Codex、OpenClaw 与 Cherry Studio 的实用指南。
 template: splash
 hero:
-  tagline: 正文保持通用；文首可放置服务推荐。从获取 Key，到配置 Claude Code / OpenClaw / Cherry Studio。
+  tagline: 一套中转服务，接入你每天使用的 AI 工具。按步骤拿到 Key、完成配置，并用真实请求验证结果。
+  image:
+    file: ../../assets/houston.webp
+    alt: Houston AI 工具助手
   actions:
-    - text: 从这里开始
+    - text: 开始配置
       link: /getting-started/overview/
       icon: right-arrow
-    - text: 获取 API 服务
-      link: /getting-started/get-api-service/
+    - text: 打开 Sivyer 中转站
+      link: https://www.sivyer.cc
       icon: external
       variant: minimal
+      attrs:
+        target: _blank
+        rel: noopener noreferrer
 ---
 
-import { Card, CardGrid, Aside } from '@astrojs/starlight/components';
+import HomeHub from '../../components/HomeHub.astro';
 
-<Aside type="tip" title="还没有 API 服务？">
-	先看 [如何获取 API 服务](/getting-started/get-api-service/)。若你已有 Base URL 与 API Key，可直接进入对应工具教程。
-</Aside>
+<HomeHub />
 
-## 快速入口
-
-<CardGrid>
-	<Card title="获取 API 服务" icon="rocket">
-		准备 Base URL 与 API Key。
-		查看 [如何获取 API 服务](/getting-started/get-api-service/)。
-	</Card>
-	<Card title="Codex 安装" icon="puzzle">
-		安装 Codex 桌面版，支持官方账号或自定义网关。
-		查看 [Codex 桌面版](/coding/codex-desktop/)。
-	</Card>
-	<Card title="Claude Code 安装" icon="seti:claude">
-		安装 Claude Code CLI，支持订阅登录或中转配置。
-		查看 [Claude Code CLI](/coding/claude-code/)。
-	</Card>
-	<Card title="Cherry 生图" icon="document">
-		分辨率、质量、比例与 4K 手动设置。
-		查看 [生图详解](/clients/cherry-studio-image/)。
-	</Card>
-</CardGrid>
-
-## 文档怎么读
-
-1. 先完成「开始使用」拿到 Key  
-2. 要用 npm 安装的 CLI / Agent 时，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)  
-3. 若用多个 CLI / Agent，优先装 [CC Switch](/config-manager/cc-switch/)；若主用 Codex 桌面端，看 [Codex++](/config-manager/codex-plus-plus/)  
-4. 再打开你真正使用的工具章节  
-5. 正文里的 `{{API_BASE_URL}}` 请替换成你的服务商地址  
+<div class="home-footer-note">
+	<span class="home-status-dot" aria-hidden="true"></span>
+	文档持续更新中 · 最近更新 2026 年 9 月 8 日
+</div>

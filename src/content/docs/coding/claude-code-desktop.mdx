@@ -59,7 +59,7 @@ Windows 首次使用 Code 工作区时，通常还需要本机已安装 Git，�
 
 官方要求：桌面端网关走 **应用内第三方推理配置**，不要去改 CLI 的 `settings.json`。
 
-**前置：** API Key、网关 Base URL（`{{API_BASE_URL}}`，需支持 Anthropic Messages，常见 `/v1/messages`）、模型名 `{{MODEL_NAME}}`；能访问该地址（若站点屏蔽大陆 IP，需自备魔法）。
+**前置：** API Key、网关 Base URL（`{{API_BASE_URL}}`，需支持 Anthropic Messages，常见 `/v1/messages`）、模型名 `{{MODEL_NAME}}`。
 
 1. 打开 Claude Desktop，先停在登录/主界面即可（不必先用官方账号完成全部 onboarding）
 2. 打开菜单：
@@ -80,9 +80,9 @@ Windows 首次使用 Code 工作区时，通常还需要本机已安装 Git，�
 | Credential kind | **Static API key** |
 | Gateway auth scheme | 先试 **Bearer**；若网关要求 `x-api-key` 再改成 **x-api-key** |
 
-![Claude Code 桌面版：第三方推理 / Gateway 配置](/screenshots/ClaudeCode桌面-01-第三方推理配置.png)
+![Claude Code 桌面版：第三方推理 / Gateway 配置](/screenshots/ClaudeCode桌面-01-第三方推理配置.svg)
 
-![Claude Code 桌面版：Code 工作区对话成功](/screenshots/ClaudeCode桌面-02-对话成功.png)
+![Claude Code 桌面版：Code 工作区对话成功](/screenshots/ClaudeCode桌面-02-对话成功.svg)
 
 <Aside type="caution" title="不要混用 CLI 配置">
 	给桌面版配中转时，**不要**指望只改 `~/.claude/settings.json` 就会生效。那是 CLI / 部分扩展路径；桌面端官方明确读取的是 Third-Party Inference。

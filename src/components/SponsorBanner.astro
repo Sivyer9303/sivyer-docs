@@ -1,0 +1,74 @@
+---
+interface Props {
+	title?: string;
+	href?: string;
+	cta?: string;
+	note?: string;
+}
+
+/**
+ * 文首广告 / 服务推荐。
+ * 在 MDX 顶部：
+ * import SponsorBanner from '../../../components/SponsorBanner.astro';
+ * <SponsorBanner />
+ */
+const {
+	title = '推荐 API 服务',
+	href = 'https://www.sivyer.cc',
+	cta = '打开 Sivyer 中转站',
+	note = '本文为通用 AI 工具教程。若你还没有可用的 API 服务，可使用下方推荐站点获取 Key 后继续配置。访问推荐站点需自备魔法。',
+} = Astro.props;
+---
+
+<aside class="sponsor-banner" aria-label="服务推荐">
+	<p class="sponsor-banner__eyebrow">Sponsored</p>
+	<div class="sponsor-banner__body">
+		<p class="sponsor-banner__title">{title}</p>
+		<p class="sponsor-banner__note">{note}</p>
+		<p>
+			<a class="sponsor-banner__cta" href={href} target="_blank" rel="noopener noreferrer">
+				{cta}
+			</a>
+			<span class="sponsor-banner__hint">（需自备魔法）</span>
+			<code class="sponsor-banner__url">{href.replace(/^https?:\/\//, '')}</code>
+		</p>
+	</div>
+</aside>
+
+<style>
+	.sponsor-banner {
+		margin: 0 0 1.75rem;
+		padding: 1rem 1.15rem;
+		border: 1px solid var(--sl-color-hairline);
+		border-radius: 0.75rem;
+		background: color-mix(in oklab, var(--sl-color-accent-low) 35%, transparent);
+	}
+	.sponsor-banner__eyebrow {
+		margin: 0 0 0.35rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		opacity: 0.7;
+	}
+	.sponsor-banner__title {
+		margin: 0 0 0.35rem;
+		font-weight: 650;
+	}
+	.sponsor-banner__note {
+		margin: 0 0 0.75rem;
+		opacity: 0.9;
+	}
+	.sponsor-banner__cta {
+		font-weight: 600;
+		text-decoration: none;
+	}
+	.sponsor-banner__hint {
+		margin-left: 0.35rem;
+		font-size: 0.9em;
+		opacity: 0.85;
+	}
+	.sponsor-banner__url {
+		margin-left: 0.65rem;
+		font-size: 0.85em;
+	}
+</style>

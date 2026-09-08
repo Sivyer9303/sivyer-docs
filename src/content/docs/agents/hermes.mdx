@@ -1,0 +1,84 @@
+---
+title: Hermes Agent
+description: 安装并配置 Hermes Agent，接入自定义模型服务。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想要带持久记忆、可沉淀 Skills 的本地 Agent，并希望模型流量走自己网关的用户。
+
+官网参考：https://hermes-agent.org/
+
+## 安装
+
+常见方式之一是用 npm 全局安装。若还没有 Node.js / npm，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+```bash
+npm install -g hermes-agent
+```
+
+或以官方安装脚本为准（推荐以官网当前文档为准）：
+
+```bash
+# 示例：按官网最新 install 脚本执行
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+```
+
+初始化：
+
+```bash
+hermes setup
+# 或
+hermes model
+```
+
+## 前置条件
+
+- API Key、`{{API_BASE_URL}}`、`{{MODEL_NAME}}`  
+- 建议配合 [CC Switch](/config-manager/cc-switch/)  
+
+## 方式一：CC Switch（推荐）
+
+<Steps>
+
+1. CC Switch → 添加供应商
+2. 勾选 **Hermes**
+3. 填写 Key 与 `{{API_BASE_URL}}`
+4. 设置默认模型
+5. 启用后新开终端，运行 `hermes`
+
+</Steps>
+
+CC Switch 通常维护：
+
+- `~/.hermes/config.yaml`  
+- `~/.hermes/.env`  
+
+## 方式二：手动配置
+
+在 `config.yaml` / `.env` 中配置 custom provider：
+
+- provider endpoint：`{{API_BASE_URL}}`  
+- api key：写入 `.env`，避免明文提交到 Git  
+- default model：`{{MODEL_NAME}}`  
+
+改认证类配置后，按官方说明重启（例如 gateway restart，若你启用了网关模式）。
+
+## 验证
+
+```bash
+hermes
+# 或
+hermes chat -q "请只回复：配置成功"
+```
+
+## 常见问题
+
+- **找不到命令**：检查 npm 全局 bin 是否在 PATH  
+- **provider 无效**：确认 Base URL 与协议匹配  
+- **Skills / MCP 丢失**：切换供应商后检查 CC Switch 是否应用了通用配置片段  

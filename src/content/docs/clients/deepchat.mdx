@@ -1,0 +1,53 @@
+---
+title: DeepChat
+description: 配置 DeepChat 桌面 Agent 客户端，对接 NewAPI 类服务。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+需要更偏 Agent / MCP / Skills 能力的桌面客户端用户。
+
+- 官网：https://deepchat.thinkinai.xyz  
+- GitHub：https://github.com/ThinkInAIXYZ/deepchat  
+
+## 安装
+
+从官网下载页安装 Windows / macOS 版本。
+
+## 方式一：一键导入（若服务商支持）
+
+部分 NewAPI 控制台可在令牌菜单中选择 DeepChat，通过 Deep Link 唤起应用并导入。
+
+## 方式二：手动配置
+
+<Steps>
+
+1. 打开 DeepChat 设置中的 Provider / 服务商
+2. 添加或编辑 NewAPI / OpenAI 兼容提供商
+3. 填写：
+   - API 地址：`{{API_BASE_URL}}`
+   - API Key：`sk-...`
+4. 拉取或添加模型 `{{MODEL_NAME}}`
+5. 返回聊天，选择模型测试
+
+</Steps>
+
+![DeepChat Provider 配置](/screenshots/DeepChat-01-Provider配置.png)
+
+<Aside type="tip">
+	若控制台提供 DeepChat 一键填充链接，优先用一键，再核对手动字段是否正确。
+</Aside>
+
+## 验证
+
+新建会话，发送测试消息；Agent / 工具调用类功能需模型与网关支持。
+
+## 常见问题
+
+- **导入失败**：改用手动填写  
+- **模型列表为空**：检查地址与 Key，或手动添加模型 ID  

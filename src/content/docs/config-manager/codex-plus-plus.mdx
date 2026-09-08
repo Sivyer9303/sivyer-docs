@@ -1,0 +1,109 @@
+---
+title: Codex++
+description: 使用 Codex++ 为 Codex 桌面端图形化配置纯 API / 中转供应商。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+主要使用 **Codex 桌面 App**，希望用图形界面管理「官方登录 / 纯 API」与供应商的用户。
+
+纯官方 ChatGPT 登录、不装增强工具时，也可直接看 [Codex 桌面版](/coding/codex-desktop/) 的「方式一」。
+
+Codex++ 是面向 Codex App 的外部增强启动器与管理工具（不直接改 Codex 安装文件）。它和 [CC Switch](/config-manager/cc-switch/) 定位不同：
+
+| | CC Switch | Codex++ |
+| --- | --- | --- |
+| 侧重 | 多 CLI / Agent 统一切换 | Codex 桌面端增强与供应商管理 |
+| 典型对象 | Claude Code、Codex CLI、OpenClaw、Hermes 等 | Codex App |
+
+项目参考：https://github.com/BigPizzaV3/CodexPlusPlus  
+
+## 安装
+
+1. 打开 Codex++ 的 GitHub Releases / 项目说明页，下载对应系统安装包  
+2. 安装后从 **Codex++** 入口启动（不要只用原版 Codex 快捷方式，否则增强配置可能未生效）  
+3. 确认本机已安装官方 Codex App（Codex++ 是增强层，不是替代安装包）
+
+![Codex++ 主界面 / 供应商配置入口](/screenshots/Codex++-01-主界面.png)
+
+## 前置条件
+
+- 已有 `{{API_BASE_URL}}` 与 API Key  
+- Key 分组包含你要用的 Codex / GPT 相关模型  
+- 模型名 `{{MODEL_NAME}}` 与服务商列表完全一致  
+
+## 纯 API 接入步骤（推荐）
+
+1. 打开 Codex++，进入 **供应商配置**
+2. 点击 **添加供应商**
+3. 先填基础信息：
+
+| 字段 | 建议填写 |
+| --- | --- |
+| 名称 | 自定义，如 `我的网关` |
+| 接入模式 | **纯 API** |
+| 配置模型 | `{{MODEL_NAME}}`（多个用英文逗号分隔，完整复制服务商模型名） |
+
+4. 在 **Codex 目标** 中启用 ✅，并填写：
+
+| 字段 | 建议填写 |
+| --- | --- |
+| Base URL | `{{API_BASE_URL}}`（首尾不要空格；是否带 `/v1` 以你使用的网关说明为准，末尾不要多 `/`） |
+| Key | `sk-...`（不要手写 `Bearer ` 前缀） |
+| 上游协议 | 多数中转站选 **Chat Completions** |
+
+5. 点击顶部 **保存**
+6. 点击右上角 **重启**，让配置生效
+7. 若提示登录：选择「使用其他方式登录」，粘贴同一个 API Key 后继续
+8. 从 Codex++ 启动 Codex，发送测试消息
+
+![添加供应商（纯 API）填写示例](/screenshots/Codex++-02-添加供应商纯API.png)
+
+![Codex 目标 Base URL / Key](/screenshots/Codex++-03-Codex目标填写.png)
+
+![保存并重启成功](/screenshots/Codex++-04-保存并重启.png)
+
+## 接入模式说明
+
+| 模式 | 用途 |
+| --- | --- |
+| 官方登录 | 只用 ChatGPT / Codex 官方账号 |
+| 官方登录 + API | 保留官方登录态，模型请求走兼容 API |
+| 纯 API | 完全用自定义 Base URL / Key（中转站最常用） |
+| 聚合供应商 | 在多个 API 供应商间路由 / 故障转移（进阶） |
+
+新手对接中转站，优先选 **纯 API**。
+
+## 验证
+
+1. 确认当前启用的是你刚加的供应商  
+2. 从 Codex++ 启动 Codex（不是旧快捷方式）  
+3. 发送测试请求  
+4. （可选）在服务商控制台查看是否有新用量  
+
+## 常见问题
+
+**401 / 无权限**  
+Key 不完整，或分组不含当前模型。
+
+**模型名无效**  
+必须与定价页完整模型名一致，不要凭印象简写。
+
+**404 / 路径不对**  
+检查 Base URL 是否多写或少写 `/v1`，末尾不要多余 `/`。可先用 [验证页 curl](/getting-started/verify/) 测网关。
+
+**改完没生效**  
+必须保存后重启 / 热重载，并从 Codex++ 入口启动。
+
+**和 CC Switch 一起用会不会打架**  
+两者都可能改 Codex 相关配置。同一台机器建议 **只选一个作为 Codex 的主配置入口**，避免互相覆盖。
+
+<Aside type="tip">
+	若你主要管终端里的 Codex CLI / 多个 Agent，优先用 [CC Switch](/config-manager/cc-switch/)；  
+	若主战场是 Codex 桌面 App，可先看 [Codex 桌面版](/coding/codex-desktop/)，或用本页 Codex++ 做图形化配置。
+</Aside>

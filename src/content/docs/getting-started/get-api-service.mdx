@@ -1,0 +1,74 @@
+---
+title: 如何获取 API 服务
+description: 获取 Base URL 与 API Key 的通用说明，以及推荐的 NewAPI 中转服务入口。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner
+	title="推荐：Sivyer NewAPI 中转站"
+	cta="打开 www.sivyer.cc"
+	note="若你还没有可用的 API 服务，可使用 Sivyer 注册、充值并创建 Key，再回到本站继续配置各 AI 工具。站点对部分地区网络有访问限制，打开下方链接需自备魔法。"
+/>
+
+## 你需要准备什么
+
+无论用哪家服务商，后续工具教程都需要：
+
+1. **站点地址（Base URL）**  
+2. **API Key（令牌）**  
+3. **可用额度 / 余额**  
+4. （可选）知道自己要用的 **模型名** 与 **分组**
+
+## 推荐服务：Sivyer
+
+| 项目 | 内容 |
+| --- | --- |
+| 网站 | [https://www.sivyer.cc](https://www.sivyer.cc)（需自备魔法） |
+| 类型 | 基于 NewAPI 的统一 API 网关 |
+| 常见能力 | Claude / OpenAI·Codex / Gemini / 国模等（以定价页为准） |
+| 适配工具 | Cherry Studio、CC Switch，以及本站列出的多数客户端 |
+
+![登录后的控制台首页（余额、菜单清晰可见）](/screenshots/获取API-01-控制台首页.png)
+
+### 注册与登录
+
+<Steps>
+
+1. 打开 [https://www.sivyer.cc](https://www.sivyer.cc)（需自备魔法）
+2. 点击右上角登录 / 注册
+3. 完成账号创建并进入控制台（Console）
+4. 确认账户有可用余额；若为 0，按站点指引充值
+
+</Steps>
+
+![注册/登录入口](/screenshots/获取API-02-登录入口.png)
+
+![余额与充值入口](/screenshots/获取API-03-余额与充值.png)
+
+### 拿到 Base URL
+
+对本推荐站点，API 根地址一般为：
+
+```text
+https://www.sivyer.cc
+```
+
+部分 OpenAI 兼容客户端需要：
+
+```text
+https://www.sivyer.cc/v1
+```
+
+在其他工具教程中，请把它们对应写成你自己的 `{{API_BASE_URL}}` / `{{API_BASE_URL}}/v1`。
+
+### 下一步
+
+1. 去 [创建 API Key 与分组](/getting-started/create-key/)  
+2. 若要管多个 CLI，去 [CC Switch](/config-manager/cc-switch/)  
+3. 再进入具体工具教程  
+
+<Aside type="note">
+	已有其他合规 API 服务的用户，可跳过本页品牌部分，只要你的服务提供 Base URL 与 Key，同样能跟着后续通用教程配置。
+</Aside>

@@ -1,0 +1,146 @@
+---
+title: Cursor
+description: 在 Cursor 中使用官方账号，或通过 Cursor++（CCursor）接入自定义供应商。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+在 Cursor 编辑器里写代码的用户：可用 Cursor 官方账号与内置模型，也可通过 **Cursor++（CCursor）** 自备 Key / 接中转站。
+
+项目主页：https://github.com/CometixSpace/CCursor  
+
+## 安装 Cursor
+
+从官网下载安装：https://cursor.com  
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **Cursor 官方账号** | 使用 Cursor Free / Pro 等计划自带的模型额度 |
+| **Cursor++（CCursor）BYOK** | 使用自己的 API Key / 中转站驱动 Agent、Chat、Composer |
+
+本站**不再推荐**只在 Cursor Settings 里填 OpenAI Compatible Base URL 的旧做法；自定义供应商请统一用 Cursor++。
+
+## 方式一：官方 Cursor 账号（推荐先这样用）
+
+1. 打开 Cursor，按提示 **Sign in**（可用邮箱 / Google 等，以当前版本为准）  
+2. 在账号 / Billing 中确认当前计划（Free / Pro 等）  
+3. 直接在 Chat / Agent / Composer 中选用 Cursor 提供的模型开始对话  
+4. 若已安装 Cursor++：在侧边栏把 **BYOK 开关关掉**，否则请求可能仍走自备供应商  
+
+官方站点与定价以 https://cursor.com 当前说明为准。
+
+想换账号：在 Settings 的 Account 相关入口 Sign out，再重新登录。  
+若安装 Cursor++ 后无法登录官方账号：先在 Cursor++ 面板把 **BYOK 设为 OFF**，再登录。
+
+## 方式二：用 Cursor++（CCursor）接自定义供应商（推荐）
+
+Cursor++ 在 Cursor 扩展宿主内跑本地 BYOK 服务，把 Agent / Chat / Composer 的请求转到你配置的 Anthropic、OpenAI、Gemini 或 **任意兼容端点**。
+
+### 前置条件
+
+- 已安装 Cursor IDE  
+- 本机 Node.js **≥ 18**（没有则先看 [安装 Node.js 与 npm](/basics/nodejs-npm/)）  
+- API Key，以及网关地址（常见 `{{API_BASE_URL}}` 或 `{{API_BASE_URL}}/v1`，以服务商说明为准）  
+- 模型名 `{{MODEL_NAME}}`（与服务商列表一致）
+
+### 安装 Cursor++
+
+```bash
+npx @cometix/ccursor install
+```
+
+然后**完全退出并重启 Cursor**。
+
+常用命令：
+
+```bash
+npx @cometix/ccursor status    # 查看是否安装成功
+npx @cometix/ccursor uninstall # 卸载并还原补丁
+```
+
+### 配置供应商
+
+<Steps>
+
+1. 重启后打开 Cursor 侧边栏的 **Cursor++** 面板  
+2. 按面板提示完成登录 / 授权（若要求 LinuxDO Connect，按网页引导完成）  
+3. 打开 **BYOK** 开关  
+4. 添加 Provider（服务商）：填写名称、类型、Base URL、API Key  
+5. 在该 Provider 下添加模型：`apiModel` / 显示名填写 `{{MODEL_NAME}}`（可按需开 thinking、上下文长度等）  
+6. 在 Chat / Agent / Composer 中选用你刚加的模型，发送测试消息  
+
+</Steps>
+
+字段对照（接到中转站时）：
+
+| 项 | 建议 |
+| --- | --- |
+| 类型 | 优先选与上游协议匹配的类型（OpenAI / Anthropic / Gemini）；不确定时先试 **OpenAI 兼容** |
+| Base URL | `{{API_BASE_URL}}` 或 `{{API_BASE_URL}}/v1`（以面板校验 / 服务商文档为准） |
+| API Key | `sk-...` |
+| 模型 ID | 服务商定价页上的完整模型名 |
+
+![Cursor++ 侧边栏与供应商配置](/screenshots/Cursor-01-Cursor++侧边栏配置.png)
+
+![Cursor++ 添加模型后对话成功](/screenshots/Cursor-02-BYOK对话成功.png)
+
+### 可选：手改 `~/.ccursor/providers.json`
+
+一般用侧边栏即可。需要备份或批量改时，配置在用户目录：
+
+| 文件 | 用途 |
+| --- | --- |
+| `~/.ccursor/providers.json` | 服务商、Key、模型 |
+| `~/.ccursor/routes.json` | BYOK 开关与路由白名单 |
+
+OpenAI 兼容中转示例（字段以你安装的 Cursor++ 版本为准，可先在面板里加一条再对照文件）：
+
+```json
+{
+  "providers": [
+    {
+      "id": "my-gateway",
+      "name": "My Gateway",
+      "type": "openai",
+      "baseUrl": "{{API_BASE_URL}}/v1",
+      "auth": { "kind": "apiKey", "value": "sk-你的密钥" },
+      "models": [
+        {
+          "id": "my-model",
+          "apiModel": "{{MODEL_NAME}}",
+          "displayName": "{{MODEL_NAME}}",
+          "defaultOn": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+配置支持热重载：改完通常不必重启 Cursor；不生效时再重启一次。
+
+<Aside type="tip" title="切回官方额度">
+	在 Cursor++ 侧边栏关闭 **BYOK**，即可回到 Cursor 官方模型通道（仍建议保持 Cursor 账号已登录）。
+</Aside>
+
+## 验证
+
+- 官方路径：BYOK 关闭时，官方模型能正常对话  
+- BYOK 路径：选用自备模型能返回；故意填错 Key 应报错，改回后恢复  
+
+## 常见问题
+
+- **安装后无法登录 Cursor**：侧边栏将 BYOK 设为 OFF，再 Sign in  
+- **模型未找到**：在 Cursor++ 面板补模型，或检查 `providers.json` 里的 `apiModel`  
+- **401 / 403 / 404**：核对 Key、Base URL、模型名；可先用 [验证页](/getting-started/verify/) 测网关  
+- **想卸干净**：`npx @cometix/ccursor uninstall` 后重启 Cursor  
+- **Node 版本过低**：升级到 18+ 后再安装  
+
+更多说明与 Issue：https://github.com/CometixSpace/CCursor  

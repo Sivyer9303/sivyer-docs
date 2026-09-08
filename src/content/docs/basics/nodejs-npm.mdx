@@ -1,0 +1,98 @@
+---
+title: 安装 Node.js 与 npm
+description: 安装 Node.js（自带 npm），供 Claude Code、Codex、Gemini CLI、OpenClaw 等工具使用。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+后面教程里出现 `npm install -g ...` 时，本机需要先有 **Node.js**。安装 Node.js 后会自带 **npm**，一般不必单独装 npm。
+
+本页是公共前置步骤；装好后请回到你正在看的工具教程继续。
+
+## 需要什么版本
+
+| 场景 | 建议 |
+| --- | --- |
+| 多数 CLI（Claude Code、Codex、Gemini CLI、OpenCode 等） | Node.js **18+**（优先 LTS） |
+| OpenClaw 等较新 Agent | 常见要求 **22+**（以该工具官网为准） |
+
+不确定时：先装当前 **LTS**；若某工具提示版本过低，再按该工具说明升级。
+
+## 安装（推荐：官方安装包）
+
+<Tabs>
+<TabItem label="Windows">
+
+1. 打开官网下载页：https://nodejs.org/zh-cn/download  
+2. 选择 **Windows**，下载 **LTS** 的 `.msi` 安装包  
+3. 双击安装，一路下一步；勾选 **Add to PATH**（若有该选项）  
+4. **关闭并重新打开** 终端（PowerShell / CMD / Windows Terminal）
+
+验证：
+
+```bash
+node -v
+npm -v
+```
+
+能看到类似 `v22.x.x` 与 `10.x.x` 即表示成功。
+
+</TabItem>
+<TabItem label="macOS">
+
+**方式 A：官网安装包（最省事）**
+
+1. 打开 https://nodejs.org/zh-cn/download  
+2. 下载 **macOS** 的 **LTS** 安装包并安装  
+3. 关闭并重新打开「终端」
+
+**方式 B：Homebrew**
+
+若已安装 Homebrew：
+
+```bash
+brew install node
+```
+
+验证：
+
+```bash
+node -v
+npm -v
+```
+
+</TabItem>
+</Tabs>
+
+## 可选：用 nvm 管理多版本（进阶）
+
+同一台电脑要在 Node 18 / 22 之间切换时，可用 nvm（或 Windows 上的 nvm-windows）。日常只用一个版本时，**官网安装包即可**，不必上 nvm。
+
+## 验证是否可用
+
+```bash
+node -v
+npm -v
+```
+
+再试一条无害命令，确认 npm 能联网拉包（可选）：
+
+```bash
+npm ping
+```
+
+## 常见问题
+
+- **`node` / `npm` 不是内部或外部命令**：安装后未重启终端，或安装时未加入 PATH；重装并勾选 PATH，或注销/重启后再试  
+- **`npm` 很慢或超时**：检查网络 / 代理；可换镜像（自行选择可信源）后再装全局包  
+- **权限错误（macOS/Linux 的 EACCES）**：避免用 `sudo npm install -g`；优先修 npm 全局目录权限，或改用 nvm 把全局包装在用户目录  
+- **装了但工具仍提示 Node 版本不够**：按该工具要求升级到指定大版本（例如 OpenClaw 常见 22+）
+
+<Aside type="tip" title="装好了下一步？">
+	回到你正在配置的工具页继续安装 CLI，例如 [Claude Code](/coding/claude-code/)、[Codex CLI](/coding/codex/)、[OpenClaw](/agents/openclaw/) 等。
+</Aside>

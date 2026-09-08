@@ -1,0 +1,111 @@
+---
+title: Codex CLI
+description: 安装 OpenAI Codex CLI：可用 ChatGPT 官方账号登录，或接入兼容 API 网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+习惯用 OpenAI Codex 命令行做编程任务的用户。
+
+若使用 **Codex 桌面 App**，请看 [Codex 桌面版](/coding/codex-desktop/) 或 [Codex++](/config-manager/codex-plus-plus/)，不要按本页的 npm CLI 流程操作。
+
+## 安装
+
+本工具通过 npm 全局安装。若还没有 Node.js / npm，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+```bash
+npm install -g @openai/codex
+```
+
+验证：
+
+```bash
+codex --version
+```
+
+## 选哪种方式
+
+| 方式 | 适合 | 计费 |
+| --- | --- | --- |
+| **ChatGPT 账号登录** | 已有可用的 ChatGPT / Codex 订阅权益 | 走 ChatGPT 计划额度 |
+| **官方 OpenAI API Key** | 使用 platform.openai.com 按量 Key | 走 API 用量 |
+| **自定义 API / 中转** | 自建或第三方 Responses 兼容网关 | 走你的 Key / 套餐 |
+
+官方认证说明：https://developers.openai.com/codex/auth  
+
+## 方式一：官方 ChatGPT 账号登录（推荐有订阅时）
+
+1. 若以前用过中转，先停用 [CC Switch](/config-manager/cc-switch/) 里 Codex 的自定义供应商，并避免 `config.toml` 里仍指向自定义 `model_provider`  
+2. 新开终端，运行：
+
+```bash
+codex login
+```
+
+3. 浏览器完成 **Sign in with ChatGPT**  
+4. 回到终端后运行 `codex`，发起一次简单任务  
+
+查看当前登录状态：
+
+```bash
+codex login status
+```
+
+退出登录：
+
+```bash
+codex logout
+```
+
+## 方式二：官方 OpenAI API Key
+
+从 OpenAI 控制台创建 API Key，然后：
+
+```bash
+printenv OPENAI_API_KEY | codex login --with-api-key
+```
+
+（先把 Key 放进环境变量 `OPENAI_API_KEY`，再执行上面命令；不要把 Key 写进命令历史。）
+
+此方式按 API 用量计费；部分依赖 ChatGPT 工作区的云端能力可能不可用。
+
+## 方式三：CC Switch 配自定义 API / 中转
+
+1. 打开 [CC Switch](/config-manager/cc-switch/)  
+2. 添加供应商，勾选 **Codex**  
+3. 填写 Key 与 `{{API_BASE_URL}}`  
+4. 启用后 **新开终端** 再运行 `codex`
+
+部分网关对接 Codex 时需要 **Local Routing / Responses 协议** 兼容；若界面提示 Local Routing，按界面保留即可。
+
+## 方式四：手动配置自定义 API / 中转
+
+Codex 常见涉及：
+
+- `~/.codex/auth.json`（凭证缓存）  
+- `~/.codex/config.toml`（`model_provider`、`base_url`、`model`、`wire_api` 等）
+
+手动改容易漏字段，建议优先 CC Switch。若必须手改，以你本机 Codex 版本文档为准，并保证 `base_url` 指向 `{{API_BASE_URL}}`（通常还需 `wire_api = "responses"`）。更完整的桌面端手改示例见 [Codex 桌面版](/coding/codex-desktop/)。
+
+## 验证
+
+<Steps>
+
+1. 新开终端
+2. 运行 `codex`
+3. 发起一次简单任务
+4. 官方路径看 ChatGPT / OpenAI 侧用量；中转路径看你的服务商控制台（可选）
+
+</Steps>
+
+## 常见问题
+
+- **想用 ChatGPT 登录却仍走中转**：检查 CC Switch / `model_providers` 是否仍启用；`codex logout` 后再 `codex login`  
+- **协议不匹配 / wire_api**：确认网关支持 Responses，或启用 CC Switch 的 Local Routing  
+- **模型不存在**：模型名必须与定价页一致  
+- **改完不生效**：必须新开终端  

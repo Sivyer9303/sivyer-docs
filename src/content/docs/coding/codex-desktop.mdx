@@ -1,0 +1,159 @@
+---
+title: Codex 桌面版
+description: 使用 Codex 桌面 App：可用 ChatGPT 官方账号，或接入自定义 Responses API 网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+使用 **Codex 桌面 App**（图形界面）的用户：可用 ChatGPT 官方账号，也可走自定义 Base URL / API Key。
+
+本页不是 [Codex CLI](/coding/codex/) 的 `npm install -g @openai/codex` 流程。桌面 App 与 CLI / IDE 扩展共用用户级配置；改完后请**完全退出再打开** App。
+
+| | Codex CLI | Codex 桌面版 |
+| --- | --- | --- |
+| 安装 | `npm install -g @openai/codex` | 官方桌面安装包 |
+| 日常入口 | 终端 `codex` | Codex App 窗口 |
+| 官方账号 | `codex login` | App 内 Sign in with ChatGPT |
+| 自定义供应商 | `~/.codex/config.toml` / CC Switch | 同上（App：Settings → Configuration → Open config.toml） |
+| 图形化增强 | — | 可用 [Codex++](/config-manager/codex-plus-plus/) |
+
+下载页：https://developers.openai.com/codex/app  
+
+## 安装
+
+1. 打开 https://developers.openai.com/codex/app 下载对应系统安装包  
+2. 安装并启动 **Codex** 桌面应用  
+3. 先完成一次正常启动（确认能打开 Settings）
+
+不需要为桌面版再装一遍 npm 全局 CLI（除非你同时要用终端版）。
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **ChatGPT 官方登录** | 已有 ChatGPT / Codex 订阅权益 |
+| **官方 OpenAI API Key** | 使用 platform.openai.com 按量 Key |
+| **自定义网关 / Codex++** | 中转站或自建 Responses 兼容端点 |
+
+## 方式一：官方 ChatGPT 账号（推荐有订阅时）
+
+1. 确认没有启用会劫持请求的自定义供应商（Codex++ 里不要开「纯 API」指向中转；`~/.codex/config.toml` 不要把 `model_provider` 指到自定义网关）  
+2. 打开 Codex 桌面 App  
+3. 在登录界面选择 **Sign in with ChatGPT**，浏览器完成登录  
+4. 回到 App，新建任务做一次简单测试  
+
+官方认证说明：https://developers.openai.com/codex/auth  
+
+若界面提供 **Use API Key**：可粘贴 OpenAI 官方 API Key（按量计费），这与中转站 Key 不是同一路径。
+
+想退出官方登录：在 App 的账号 / Settings 中 Sign out，或在终端执行 `codex logout`（与 CLI 共用登录缓存时会一起退出）。
+
+## 方式二：Codex++ 图形化配置自定义 API（推荐新手接中转）
+
+若你更想点选而不是手改 TOML，用 [Codex++](/config-manager/codex-plus-plus/)：
+
+1. 安装 Codex++，并确认本机已有官方 Codex App  
+2. 在 Codex++ 添加供应商，接入模式选 **纯 API**（官方登录模式则选「官方登录」类选项，见 Codex++ 页）  
+3. 填写 Base URL、Key、模型  
+4. 保存并重启，再从 Codex++ 启动 Codex  
+
+详细字段说明见 Codex++ 专页。
+
+## 方式三：在桌面 App 中改 config.toml（自定义网关）
+
+官方路径：个人默认配置写在用户级 `~/.codex/config.toml`。  
+可在 App 内打开：**Settings → Configuration → Open config.toml**。
+
+<Aside type="caution" title="供应商必须写在用户级配置">
+	`model_provider` / `model_providers` 等键写在项目内 `.codex/config.toml` **不会生效**（官方会忽略）。自定义中转请只改 `~/.codex/config.toml`。
+</Aside>
+
+### 最小可用示例
+
+```toml
+model = "{{MODEL_NAME}}"
+model_provider = "my_gateway"
+
+[model_providers.my_gateway]
+name = "My Gateway"
+base_url = "{{API_BASE_URL}}/v1"
+wire_api = "responses"
+env_key = "MY_GATEWAY_API_KEY"
+```
+
+说明：
+
+- `base_url`：填到 `/v1` 这一层即可，不要写成 `.../v1/responses`（客户端会自己拼路径）  
+- `wire_api = "responses"`：当前 Codex 走 Responses；不要沿用旧教程里的 `chat`  
+- `env_key`：只写**环境变量名**，不要把 Key 明文写进 `config.toml`
+
+### 给桌面 App 提供 API Key
+
+桌面进程常常**读不到**你在终端里 `export` 的变量，需要另设一种持久方式：
+
+<Tabs>
+<TabItem label="推荐：~/.codex/.env">
+
+在用户目录创建或编辑 `~/.codex/.env`（与 `config.toml` 同级）：
+
+```bash
+MY_GATEWAY_API_KEY=sk-你的密钥
+```
+
+变量名必须和 `env_key` 一致。保存后**完全退出 Codex App 再打开**。
+
+</TabItem>
+<TabItem label="macOS：launchctl">
+
+```bash
+launchctl setenv MY_GATEWAY_API_KEY "sk-你的密钥"
+```
+
+然后完全退出并重启 Codex。注销登录后可能需重新设置。
+
+</TabItem>
+<TabItem label="Windows">
+
+在「系统环境变量」中新增用户变量 `MY_GATEWAY_API_KEY`，值为你的 Key；或按你使用的启动器（如 Codex++）提供的 Key 填写方式配置。改完后重新登录 Windows 或至少完全退出并重启 Codex。
+
+</TabItem>
+</Tabs>
+
+### 操作步骤
+
+1. 打开 Codex 桌面 App  
+2. 进入 **Settings → Configuration → Open config.toml**  
+3. 按上方示例写入 `model`、`model_provider`、`[model_providers.*]`  
+4. 配置 `env_key` 对应的密钥（`.env` / 系统环境变量 / Codex++）  
+5. **完全退出** Codex（确认托盘/后台进程也退出）后重新打开  
+6. 新建任务，发送一句简单测试  
+
+![Codex 桌面版：Settings 打开 config.toml](/screenshots/Codex桌面-01-打开config.png)
+
+![Codex 桌面版：自定义 model_providers 示例](/screenshots/Codex桌面-02-config示例.png)
+
+## 验证
+
+1. 官方路径：ChatGPT 登录成功且任务能跑通  
+2. 网关路径：任务能返回结果；控制台可见 `/v1/responses`（可选）  
+3. 故意弄错 Key（网关）应失败，改回后恢复  
+
+## 常见问题
+
+- **想回官方登录**：去掉自定义 `model_provider` / 在 Codex++ 切回官方登录，Sign out 后再 Sign in with ChatGPT，并彻底重启 App  
+- **仍走官方 / 没走中转**：确认改的是 `~/.codex/config.toml`，且 `model_provider` 指向你的自定义 id  
+- **鉴权失败但终端里 CLI 正常**：桌面读不到 shell 环境变量；补 `~/.codex/.env`  
+- **协议错误 / wire_api**：网关需支持 Responses  
+- **Base URL 404 或路径重复**：检查是否多写了 `/v1/v1`，或误把 `/responses` 写进 `base_url`  
+- **项目里改了 config 无效**：`model_providers` 不能放在项目级 `.codex/config.toml`  
+
+官方参考：
+
+- 认证：https://developers.openai.com/codex/auth  
+- 配置基础：https://developers.openai.com/codex/config-basic  
+- 桌面 App：https://developers.openai.com/codex/app  

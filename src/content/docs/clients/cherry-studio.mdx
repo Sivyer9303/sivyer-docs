@@ -1,0 +1,67 @@
+---
+title: Cherry Studio 聊天
+description: 安装 Cherry Studio，并配置 NewAPI / OpenAI 兼容服务商用于对话。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想要图形界面聊天、写作，并且可能后续用同客户端生图的用户。
+
+- 下载：https://github.com/CherryHQ/cherry-studio/releases  
+- 文档：https://docs.cherry-ai.com  
+
+## 安装
+
+<Tabs>
+<TabItem label="Windows">
+
+下载 `*-x64-setup.exe`（或 arm64），双击安装。
+
+</TabItem>
+<TabItem label="macOS">
+
+Apple Silicon 用 `*-arm64.dmg`，Intel 用 `*-x64.dmg`，拖入「应用程序」。
+
+</TabItem>
+</Tabs>
+
+## 前置条件
+
+- API Key  
+- API 根地址：`{{API_BASE_URL}}`  
+- 对话模型：`{{MODEL_NAME}}`
+
+## 配置 NewAPI / 兼容服务商
+
+<Steps>
+
+1. 打开 **设置 → 模型服务**
+2. 选择内置 **New API**（或添加 OpenAI 兼容服务商）
+3. 填写：
+   - API 密钥：`sk-...`
+   - API 地址：`{{API_BASE_URL}}`（一般填根地址，不要贴完整 `/chat/completions`）
+4. 获取或手动添加模型
+5. **检测**通过后，打开右上角 **启用**
+6. 回到对话页选择模型，发送「你好」
+
+</Steps>
+
+![Cherry Studio NewAPI 配置页](/screenshots/Cherry-01-NewAPI配置页.png)
+
+## 验证
+
+对话能正常回复；控制台可看到用量（可选）。
+
+## 下一步
+
+- 生图与 4K：[Cherry Studio 生图](/clients/cherry-studio-image/)  
+
+## 常见问题
+
+- **检测失败**：检查 `https://`、Key、是否误填完整接口路径  
+- **旧地址残留**：清空非默认协议里的旧 URL 后再测  

@@ -1,0 +1,62 @@
+---
+title: OpenCode
+description: 安装 OpenCode，并通过 CC Switch 或手动方式接入 API 网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+使用 OpenCode 作为 AI CLI / Agent 工具链，并希望统一管理供应商的用户。
+
+## 安装
+
+本工具通过 npm 全局安装。若还没有 Node.js / npm，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+```bash
+npm install -g opencode-ai
+```
+
+（包名以官方当前发布为准。）
+
+## 前置条件
+
+- API Key 与 `{{API_BASE_URL}}`  
+- 推荐先配置 [CC Switch](/config-manager/cc-switch/)  
+
+## 方式一：CC Switch（推荐）
+
+<Steps>
+
+1. 添加供应商并勾选 **OpenCode**
+2. 填写 Key、`{{API_BASE_URL}}`、默认模型
+3. 启用
+4. 新开终端后再用 OpenCode
+
+</Steps>
+
+配置通常写入：`~/.config/opencode/opencode.json`
+
+## 方式二：手动配置
+
+在 `opencode.json` 的 provider 块中填写：
+
+- base URL：`{{API_BASE_URL}}`  
+- api key  
+- model：`{{MODEL_NAME}}`  
+
+保存后重启终端 / 重启 OpenCode。
+
+## 验证
+
+1. 启动 OpenCode  
+2. 发起一次简单任务  
+3. 确认响应来自你的网关（可通过控制台用量观察）  
+
+## 常见问题
+
+- **与 Claude Code 配置互相覆盖**：尽量用 CC Switch 统一管理，避免手改多处  
+- **模型名错误**：与服务商列表保持一致  

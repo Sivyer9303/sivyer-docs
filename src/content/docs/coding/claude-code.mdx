@@ -1,0 +1,141 @@
+---
+title: Claude Code CLI
+description: 安装 Claude Code 命令行：可用官方 Claude 订阅登录，或接入自定义 API / 中转。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+希望在终端里用 Claude 做编程、改仓库、跑 Agent 工作流的用户。
+
+若你要用图形界面（Claude Desktop 的 Code 工作区），请看 [Claude Code 桌面版](/coding/claude-code-desktop/)，配置方式不同，**不要**把本页的 `settings.json` 当成桌面版方案。
+
+## 安装
+
+本工具通过 npm 全局安装。若还没有 Node.js / npm，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)（建议 18+）。
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+验证：
+
+```bash
+claude --version
+```
+
+## 选哪种方式
+
+| 方式 | 适合 | 计费 |
+| --- | --- | --- |
+| **官方 Claude 订阅登录** | 已有 Pro / Max / Team / Enterprise | 走订阅额度 |
+| **官方 Console API Key** | 有 Anthropic Console 按量计费 | 走 API 用量 |
+| **自定义 API / 中转** | 使用自建或第三方网关 | 走你的 Key / 套餐 |
+
+下面先写官方账号；中转见后文。
+
+## 方式一：官方 Claude 订阅登录（推荐有订阅时）
+
+1. 确认账号已开通 **Pro / Max / Team / Enterprise**（免费版一般**不含** Claude Code；升级见 https://claude.ai/upgrade ）  
+2. 若以前配过中转，先清掉会抢登录态的变量，例如取消 `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_API_KEY`，或暂时关掉 [CC Switch](/config-manager/cc-switch/) 里 Claude Code 的自定义供应商  
+3. 新开终端，进入项目目录，运行：
+
+```bash
+claude
+```
+
+4. 首次或未登录时，选择 **Claude account with subscription**（用 Claude 订阅账号登录）  
+5. 按提示在浏览器完成与 claude.ai 相同的账号登录  
+6. 回到终端后即可对话；可用 `/status` 查看当前登录方式  
+
+切换账号或从 API Key 切回订阅：
+
+```bash
+/logout
+```
+
+退出后再运行 `claude`（或 `claude login` / `/login`），重新选订阅登录。
+
+官方说明：https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan  
+
+<Aside type="tip" title="官方 Console 按量 Key">
+	登录时也可选 **Anthropic Console account**（API 按量计费），或在环境中提供官方 `ANTHROPIC_API_KEY`。这与「中转站 Key」不同：请求仍打官方 Anthropic，按 Console 账单计费。
+</Aside>
+
+## 方式二：用 CC Switch 配自定义 API / 中转
+
+见 [CC Switch](/config-manager/cc-switch/)：添加供应商 → 勾选 Claude Code → 启用 → 新开终端运行 `claude`。
+
+## 方式三：手动配置自定义 API / 中转
+
+编辑 `~/.claude/settings.json`（Windows 在用户目录 `.claude\settings.json`）：
+
+```json
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "sk-你的密钥",
+    "ANTHROPIC_BASE_URL": "{{API_BASE_URL}}",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "{{MODEL_NAME}}",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "{{MODEL_NAME}}",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_NAME": "{{MODEL_NAME}}",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "{{MODEL_NAME}}",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_NAME": "{{MODEL_NAME}}",
+    "ANTHROPIC_MODEL": "{{MODEL_NAME}}",
+    "hasCompletedOnboarding": "true"
+  },
+  "includeCoAuthoredBy": false,
+  "model": "{{MODEL_NAME}}"
+}
+```
+
+模型名请按服务商列表填写（可分别为 Haiku / Sonnet / Opus / 默认模型设不同值）。也可同时写入 `ANTHROPIC_API_KEY`（与 `AUTH_TOKEN` 同值）。
+
+若启动后仍提示登录 / 走官方 Onboarding，确认 `env` 里已有 `"hasCompletedOnboarding": "true"`，保存后**新开终端**再运行 `claude`。
+
+**临时环境变量（仅当前终端）：**
+
+<Tabs>
+<TabItem label="macOS / Linux">
+
+```bash
+export ANTHROPIC_BASE_URL="{{API_BASE_URL}}"
+export ANTHROPIC_AUTH_TOKEN="sk-你的密钥"
+claude
+```
+
+</TabItem>
+<TabItem label="Windows PowerShell">
+
+```powershell
+$env:ANTHROPIC_BASE_URL="{{API_BASE_URL}}"
+$env:ANTHROPIC_AUTH_TOKEN="sk-你的密钥"
+claude
+```
+
+</TabItem>
+</Tabs>
+
+## 验证
+
+<Steps>
+
+1. 新开终端
+2. 运行 `claude`
+3. 发送：`请只回复：配置成功`
+4. 能正常回复即成功
+
+</Steps>
+
+![Claude Code 成功对话](/screenshots/ClaudeCode-01-对话成功.png)
+
+## 常见问题
+
+- **想用订阅却一直走 Key / 中转**：环境变量与订阅登录冲突时，变量优先；清掉自定义 `ANTHROPIC_*` 后 `/logout` 再 `/login`  
+- **提示需要登录 / Onboarding（中转场景）**：在 `~/.claude/settings.json` 的 `env` 中增加 `"hasCompletedOnboarding": "true"`，保存后新开终端再试  
+- **401**：Key 错误或未启用  
+- **403 无权访问分组**：重建 Key 并选择 Claude 相关分组  
+- **想回官方却仍走中转**：检查 settings.json / CC Switch 是否仍启用自定义供应商  

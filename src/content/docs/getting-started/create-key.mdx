@@ -1,0 +1,82 @@
+---
+title: 创建 API Key 与分组
+description: 在 NewAPI 类控制台创建令牌，并正确选择分组。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 前置条件
+
+- 已有 API 服务账号与余额（见 [如何获取 API 服务](/getting-started/get-api-service/)）  
+- 知道自己大概要用哪类模型（Claude / GPT·Codex / Gemini / 国模等）
+
+## 进入密钥页面
+
+<Steps>
+
+1. 登录你的 API 服务控制台
+2. 左侧找到 **API 密钥** / **令牌**（不同站点文案可能略有差异）
+3. 点击 **创建 API 密钥** / **添加令牌**
+
+</Steps>
+
+![密钥菜单入口](/screenshots/创建Key-01-密钥菜单入口.png)
+
+![创建弹窗总览](/screenshots/创建Key-02-创建弹窗.png)
+
+## 重要字段
+
+| 字段 | 建议 |
+| --- | --- |
+| 名称 | 按用途命名，如 `电脑-ClaudeCode`、`Cherry生图` |
+| **分组** | **按模型线路选择，选错会 403 / 无渠道** |
+| 过期时间 | 新手可先不设或永不过期 |
+| 额度 | 可开无限（仍受账户总余额限制），或给单 Key 设上限 |
+| 模型限制 | 新手建议先留空 |
+| IP 白名单 | 新手建议先留空 |
+
+## 如何选择分组
+
+分组决定：
+
+1. 能访问哪些渠道 / 模型  
+2. 计费倍率可能不同  
+3. Key 没勾选对应分组时，即使用户账号有权限，仍可能报「无权访问 xxx 分组」
+
+**选择原则：**
+
+1. 打开服务商定价页 / 模型广场，看目标模型所属线路说明  
+2. 创建 Key 时选择同名或对应分组  
+3. 若有 `auto`：适合容灾，但指定分组通常更稳  
+
+| 用途 | 通常选哪类分组 |
+| --- | --- |
+| Claude Code / Claude 模型 | Claude / ClaudeCode 相关 |
+| Codex / GPT | OpenAI 相关 |
+| Gemini / 生图 | Google / Gemini 相关 |
+| DeepSeek 等 | 国模相关 |
+
+![定价页上的分组提示](/screenshots/创建Key-03-定价页分组提示.png)
+
+![创建 Key 时的分组下拉框](/screenshots/创建Key-04-分组下拉框.png)
+
+## 保存并复制 Key
+
+1. 提交保存  
+2. 复制完整 Key（形如 `sk-...`）  
+3. 本地妥善保存，不要发到公开群  
+
+部分 NewAPI 站点还支持「复制连接信息 / 一键导入客户端」，可按需使用。
+
+<Aside type="caution" title="安全">
+	Key 等同密码。怀疑泄露时立刻禁用/删除并重建。
+</Aside>
+
+## 下一步
+
+- 多 CLI / Agent：[CC Switch](/config-manager/cc-switch/)  
+- 单工具：直接打开对应章节  
+- 自检：[验证是否配置成功](/getting-started/verify/)  

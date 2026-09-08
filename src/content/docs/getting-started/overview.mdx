@@ -1,0 +1,48 @@
+---
+title: 这是什么
+description: 本站文档的定位：通用 AI 工具教程，与具体 API 服务商解耦。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+
+<SponsorBanner />
+
+## 文档定位
+
+本站提供 **通用 AI 工具使用文档**，覆盖：
+
+- 基础环境：Node.js / npm  
+- 配置管家：CC Switch  
+- 编程助手：Claude Code（CLI / 桌面版）、Codex（CLI / 桌面版）、Cursor、Gemini CLI  
+- Agent：OpenClaw、Hermes、OpenCode  
+- 桌面客户端：Cherry Studio、Chatbox、DeepChat  
+
+你只需要准备两样东西，就能按教程接入大多数工具：
+
+| 项目 | 说明 | 示例写法 |
+| --- | --- | --- |
+| Base URL | API 服务根地址 | `{{API_BASE_URL}}` |
+| API Key | 调用凭证 | `sk-xxxxxxxx` |
+
+## 和「某家中转站说明书」有什么不同
+
+- **正文讲工具**：安装、字段含义、排错、截图步骤  
+- **品牌推荐只放文首**：每页顶部的 Sponsored 区域，以及 [如何获取 API 服务](/getting-started/get-api-service/)  
+- **不在正文到处嵌入商家名**，方便你换服务商、也方便文档复用  
+
+## 建议阅读顺序
+
+1. [如何获取 API 服务](/getting-started/get-api-service/)  
+2. [创建 API Key 与分组](/getting-started/create-key/)  
+3. 若要用 CLI / Agent：先 [安装 Node.js 与 npm](/basics/nodejs-npm/)  
+4. [CC Switch](/config-manager/cc-switch/)（用多个 CLI/Agent 时强烈推荐）  
+5. 打开你实际使用的工具章节  
+6. 遇到报错查 [FAQ](/faq/)  
+
+## 占位符约定
+
+全文出现以下占位符时，请自行替换：
+
+- `{{API_BASE_URL}}`：你的 API 根地址（一般**不要**带 `/chat/completions`）  
+- `{{API_BASE_URL}}/v1`：部分 OpenAI 兼容客户端需要带 `/v1`  
+- `{{MODEL_NAME}}`：服务商定价页/模型列表中的完整模型名  

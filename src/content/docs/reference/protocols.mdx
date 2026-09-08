@@ -1,0 +1,59 @@
+---
+title: 协议说明
+description: OpenAI Chat、Responses、Anthropic、Gemini、Images 等协议与工具对应关系。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+
+<SponsorBanner />
+
+## 为什么要懂协议
+
+同一网关往往同时兼容多种协议。选错协议或路径，会出现 404、Invalid JSON、鉴权失败等。
+
+## 常见协议
+
+### OpenAI Chat Completions
+
+- 路径常见：`/v1/chat/completions`  
+- 适用：Chatbox、多数插件、Cursor（兼容模式）、很多机器人  
+- 客户端通常填：`{{API_BASE_URL}}/v1`
+
+### OpenAI Responses
+
+- 部分 Codex / 新 OpenAI 链路使用  
+- 若网关只提供 Chat Completions，可能需要 CC Switch Local Routing 做转换  
+
+### Anthropic Messages
+
+- 适用：Claude Code 等  
+- 常见环境变量：`ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`  
+- Base URL 多为根地址 `{{API_BASE_URL}}`
+
+### Gemini
+
+- 适用：Gemini CLI、部分对话生图  
+- 字段名随客户端变化，优先用 CC Switch  
+
+### OpenAI Images
+
+- 路径常见：`/v1/images/generations`  
+- 适用：Cherry Studio「绘画」页  
+- 需将模型端点类型设为图像生成  
+
+## 工具 → 协议（速查）
+
+| 工具 | 更常走的协议 |
+| --- | --- |
+| Claude Code | Anthropic |
+| Codex | OpenAI Responses（或经转换） |
+| Cursor / Chatbox | OpenAI Chat |
+| Cherry 聊天 | NewAPI 多协议 |
+| Cherry 绘画 | OpenAI Images |
+| OpenClaw / Hermes / OpenCode | 多为 OpenAI 兼容或由 CC Switch 写入 |
+
+## 填写 Base URL 的经验法则
+
+1. 先试根地址 `{{API_BASE_URL}}`  
+2. 客户端若写明 OpenAI Compatible，再试 `{{API_BASE_URL}}/v1`  
+3. **永远不要**把完整的 `/chat/completions` 粘进 Base URL（除非工具明确要求完整 URL 模式）  

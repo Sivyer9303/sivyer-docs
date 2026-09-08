@@ -1,0 +1,86 @@
+---
+title: OpenClaw
+description: 安装并配置 OpenClaw（小龙虾）Agent Gateway，接入自定义 API 服务。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+需要本地常驻 Agent / Gateway，连接消息渠道、Skills，并统一走自己 API 网关的用户。
+
+OpenClaw 偏 **网关 + 多通道编排**；若你更看重「越用越强的个人 Agent」，也可同时看 [Hermes Agent](/agents/hermes/)。
+
+## 安装
+
+本工具通过 npm 全局安装，需要较新的 Node.js（常见要求 **22+**，以官方为准）。若还没有，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+```bash
+npm install -g openclaw
+```
+
+初始化（若提供 onboard）：
+
+```bash
+openclaw onboard
+```
+
+## 前置条件
+
+- API Key 与 `{{API_BASE_URL}}`  
+- 建议先装好 [CC Switch](/config-manager/cc-switch/)  
+
+## 方式一：CC Switch（推荐）
+
+<Steps>
+
+1. 打开 CC Switch，添加供应商（或统一供应商）
+2. 勾选同步到 **OpenClaw**
+3. 填写 API Key 与 `{{API_BASE_URL}}`
+4. 选择默认模型 `{{MODEL_NAME}}`
+5. 启用供应商
+6. 新开终端，再启动 OpenClaw / Gateway
+
+</Steps>
+
+CC Switch 通常写入 `~/.openclaw/openclaw.json`（JSON5）中的 provider 相关字段。
+
+![CC Switch 中选中 OpenClaw Tab / 配置成功](/screenshots/OpenClaw-01-CCSwitch中选中Tab.png)
+
+## 方式二：手动配置
+
+编辑 `~/.openclaw/openclaw.json`，在 models/providers 一类字段中填入：
+
+- base URL：`{{API_BASE_URL}}`  
+- api key：你的 Key  
+- model：`{{MODEL_NAME}}`  
+
+字段名以你本机 OpenClaw 版本为准；改完后重启 Gateway。
+
+## 常用操作（示例）
+
+```bash
+# 启动网关（端口以你实际为准）
+openclaw gateway --port 18789
+```
+
+具体子命令随版本更新，请以 `openclaw --help` 为准。
+
+## 验证
+
+1. Gateway 能正常启动  
+2. 发起一次对话或健康检查  
+3. 服务商控制台出现用量（可选）  
+
+## 常见问题
+
+- **Node 版本不够**：升级 Node 后再装  
+- **改 Key 不生效**：重启 Gateway / 新开终端  
+- **模型报错**：确认分组与模型名  
+
+<Aside type="tip">
+	OpenClaw 与 Hermes 可并存：一个偏网关编排，一个偏 Agent 运行时。可用 CC Switch 统一管 Key。
+</Aside>

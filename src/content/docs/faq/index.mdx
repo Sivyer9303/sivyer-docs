@@ -1,0 +1,81 @@
+---
+title: 常见问题 FAQ
+description: 鉴权、分组、额度、路径、生图 4K 与各工具常见报错处理。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+
+<SponsorBanner />
+
+## 魔法传送门
+
+推荐站点对部分地区网络有访问限制。若你还没有可用的魔法，可通过下方传送门注册：
+
+**[魔法传送门](https://91unicorn.cloud/#/register?code=5B2bthdF)**
+
+配好魔法后，再打开 [如何获取 API 服务](/getting-started/get-api-service/) 中的推荐站点链接。
+
+## 401 / Invalid API Key
+
+- Key 复制不完整或有空格  
+- Key 被禁用 / 删除  
+- 客户端填错字段  
+
+处理：重新复制、确认启用，或新建 Key。
+
+## 403 / 无权访问某分组
+
+- 创建 Key 时未选择该分组  
+- 账号没有该分组权限  
+
+处理：编辑/重建 Key 并勾选对应分组；若下拉没有该分组，联系服务商开通。
+
+## 余额不足 / quota
+
+- 账户余额为 0  
+- 单 Key 配额耗尽  
+- 4K 生图消耗更高  
+
+处理：充值或调高 Key 配额。
+
+## 模型不存在 / 无可用渠道
+
+- 模型名写错  
+- 分组没有对应渠道  
+- 模型临时下线  
+
+处理：从定价页原样复制模型名；换同分组可用模型。
+
+## 超时 / 无响应
+
+- 网络、代理干扰  
+- Base URL 路径错误  
+- 生图 / 4K 请求过久被断开  
+
+处理：浏览器先打开服务商网站；用 [验证页 curl](/getting-started/verify/) 排除客户端问题；生图先降到 1K。
+
+## CC Switch 已启用但 CLI 仍旧配置
+
+- 未新开终端  
+- 多个工具同时改配置文件  
+
+处理：只保留一个配置入口；重启终端。
+
+## Cherry 绘画没有模型
+
+把模型端点类型改为 **图像生成（OpenAI）**。详见 [生图教程](/clients/cherry-studio-image/)。
+
+## 调不出 4K
+
+默认绘画页通常没有 4K。请用助手自定义参数 `imageConfig.imageSize = "4K"`。见 [生图教程](/clients/cherry-studio-image/)。
+
+## quality=high 但不够清晰
+
+质量与分辨率不是一回事。需要提高 `imageSize` / 像素尺寸。
+
+## OpenClaw / Hermes 命令找不到
+
+- 未安装 Node.js / npm，或版本过低：见 [安装 Node.js 与 npm](/basics/nodejs-npm/)  
+- 全局 npm bin 未进 PATH  
+- Node 版本不满足  
+- 安装包名有变，以官网为准

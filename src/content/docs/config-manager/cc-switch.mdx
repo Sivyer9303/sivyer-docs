@@ -1,0 +1,134 @@
+---
+title: CC Switch
+description: 使用 CC Switch 统一管理 Claude Code、Codex、Gemini CLI、OpenClaw、Hermes、OpenCode 等工具的 API 配置。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+如果你同时使用多个 CLI / Agent（Claude Code、Codex、OpenClaw、Hermes 等），用 CC Switch 可以：
+
+- 按工具分别管理 Base URL 与 API Key  
+- 在顶部 Tab 之间切换，为每个工具单独添加 / 启用供应商  
+- 少改各工具自己的配置文件，降低配错概率  
+
+官网：https://ccswitch.io  
+发布页：https://github.com/farion1231/cc-switch/releases  
+
+## 安装
+
+<Tabs>
+<TabItem label="Windows">
+
+1. 打开 [Releases](https://github.com/farion1231/cc-switch/releases)
+2. 下载 `CC-Switch-*-Windows.msi`（推荐）或 Portable.zip
+3. 安装后从开始菜单启动
+
+</TabItem>
+<TabItem label="macOS">
+
+**Homebrew（推荐）：**
+
+```bash
+brew install --cask cc-switch
+```
+
+或下载 `CC-Switch-*-macOS.dmg`，拖入「应用程序」。
+
+</TabItem>
+</Tabs>
+
+## 先认识顶部工具 Tab
+
+打开 CC Switch 后，窗口**上方有一排工具图标 Tab**（例如 Claude Code、Claude Desktop、Codex、Gemini、OpenCode、OpenClaw、Hermes 等，以你安装的版本为准）。
+
+**不同工具要在不同 Tab 下操作。**  
+例如要给 Codex 配中转，就先点到 **Codex** 那个 Tab，再添加供应商；不要在 Claude Code 的 Tab 里去配 Codex。
+
+![CC Switch 顶部工具 Tab 切换位置](/screenshots/CCSwitch-Tab切换位置.png)
+
+右侧常见还有设置、历史等按钮；最右侧橙色 **「+」** 用于在**当前 Tab** 下添加供应商。
+
+## 前置条件
+
+- 已有 `{{API_BASE_URL}}` 与 API Key  
+- 本机已安装 CC Switch（需能响应 `ccswitch://` 深度链接）  
+- 已安装你要配置的目标工具（可先装 CC Switch，再按需装各 CLI）
+
+## NewAPI 一键配置（推荐）
+
+若你的 API 服务基于 **NewAPI**（含本站推荐的中转站），可在控制台令牌页 **一键导入到 CC Switch**，不必手填 Base URL 和 Key。
+
+原理：NewAPI 通过 `ccswitch://` Deep Link 唤起本机 CC Switch，并带上当前令牌与站点地址。
+
+### 操作步骤
+
+1. 先完成本页上方的 **CC Switch 安装**，并至少成功打开过一次应用（确保系统已注册 `ccswitch://` 协议）
+2. 打开 NewAPI 控制台的 **令牌 / API 密钥** 页面（需自备魔法访问站点时，见 [FAQ 魔法传送门](/faq/)）
+3. 找到要用的令牌，点击该行的 **下拉菜单 / 更多操作**
+4. 选择 **CC Switch**
+5. 浏览器会尝试唤起本机 CC Switch；若系统询问「是否打开 CC Switch」，选择允许
+6. 在弹出的配置窗口中确认：
+   - <span style="color:#dc2626;font-weight:700;">应用：切换到目标工具（如 Claude / Codex / Gemini 等）</span>
+   - **名称**：自定义，方便以后识别
+   - **主模型**（必填）以及 Haiku / Sonnet / Opus 等（按界面与你的模型列表选择）
+7. 点击 **打开 CC Switch / 确认导入**
+8. 回到 CC Switch，确认对应工具 Tab 下已出现该供应商，并点击 **启用**
+9. **新开终端** 再启动对应 CLI 做验证
+
+![NewAPI 令牌管理页下拉菜单中的 CC Switch 一键配置入口](/screenshots/CCSwitch-04-NewAPI令牌菜单一键配置.png)
+
+![一键唤起后的 CC Switch 导入/配置弹窗](/screenshots/CCSwitch-05-一键导入弹窗.png)
+
+### 一键配置排障
+
+- **点了没反应**：确认已安装桌面版 CC Switch，并重新打开过应用；可尝试重装以重新注册协议  
+- **唤起了但导入失败**：换浏览器重试，或改用下方「手动添加供应商」  
+- **导入成功但 CLI 不通**：到对应工具 Tab 确认已 **启用**，并新开终端  
+
+## 手动添加供应商
+
+没有一键入口，或一键失败时，再用本节手动配置。
+
+1. 打开 CC Switch  
+2. **先在顶部 Tab 栏选中你要配置的工具**（如 Claude Code / Codex / OpenClaw …）  
+3. 确认当前 Tab 已是目标工具后，点击右上角橙色 **「+」**  
+4. 选择预设或自定义，按下面表格填写字段  
+5. 填写 / 选择默认模型 `{{MODEL_NAME}}`  
+6. 保存后，在**该工具 Tab 的主界面**点击 **启用**  
+7. **新开终端** 再启动对应 CLI（部分工具可热更新，不确定就重启）  
+8. 若还要配另一个工具：切到对应 Tab，重复第 3～7 步  
+
+| 字段 | 填写 |
+| --- | --- |
+| 名称 | 自定义，如 `我的网关` |
+| API Key | `sk-...` |
+| Base URL / 端点 | `{{API_BASE_URL}}`（一般**不要**先加 `/v1`，除非该工具说明要求） |
+
+![已选中某工具 Tab 后的添加供应商面板](/screenshots/CCSwitch-02-添加供应商面板.png)
+
+![在该 Tab 下启用供应商成功](/screenshots/CCSwitch-03-启用供应商成功.png)
+
+<Aside type="caution" title="容易配错的一点">
+	「+」添加的是**当前 Tab 对应工具**的供应商。Tab 选错时，看起来像配好了，实际写入的是另一个工具的配置。
+</Aside>
+
+## 常见问题
+
+**启用了但仍走旧配置**  
+确认启用发生在正确的工具 Tab；关掉旧终端再开。
+
+**只想恢复官方登录**  
+切到对应工具 Tab，添加「官方登录」类预设并启用，再按该 CLI 的 OAuth 流程操作。
+
+**要一次配很多工具怎么办**  
+按 Tab 逐个添加并启用即可。部分版本另有「统一供应商」能力，属于进阶用法；新手先按「一 Tab 一工具」最稳。
+
+<Aside type="tip">
+	配好 CC Switch 后，到具体工具章节完成验证即可，例如 [Claude Code](/coding/claude-code/)、[OpenClaw](/agents/openclaw/)、[Hermes](/agents/hermes/)。  
+	若你主要用 Codex 桌面端，也可以看 [Codex 桌面版](/coding/codex-desktop/) 或 [Codex++](/config-manager/codex-plus-plus/)。
+</Aside>

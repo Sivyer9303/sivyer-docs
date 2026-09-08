@@ -1,0 +1,80 @@
+---
+title: Gemini CLI
+description: 安装 Google Gemini CLI：可用官方 Google / Gemini 登录，或接入兼容网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+希望在终端使用 Gemini 能力的用户：可用 Google 官方账号 / 官方 API Key，也可统一走自己的 API 网关。
+
+## 安装
+
+本工具通过 npm 全局安装。若还没有 Node.js / npm，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)。
+
+```bash
+npm install -g @google/gemini-cli
+```
+
+（包名以官方当前文档为准；若命令有变，以 npm 包说明为准。）
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **官方 Google / Gemini 登录或官方 Key** | 使用 Google AI Studio / Gemini API 官方通道 |
+| **自定义 API / 中转** | 使用兼容网关的 Base URL + Key |
+
+## 方式一：官方账号 / 官方 API Key
+
+1. 准备 Google 账号，并按 Gemini CLI 官方文档完成首次登录（常见为启动后走浏览器 OAuth，或以当前版本提示为准）  
+2. 或从 Google AI Studio / Google Cloud 创建 **官方 Gemini API Key**，按官方说明写入环境变量（常见名如 `GEMINI_API_KEY` / `GOOGLE_API_KEY`，以当前版本文档为准）  
+3. **不要**设置会指向中转的 `GOOGLE_GEMINI_BASE_URL`（或同类 Base URL 变量），除非你明确要走网关  
+4. 新开终端，运行 `gemini`（命令名以你安装的包为准），发送测试消息  
+
+官方文档入口：https://github.com/google-gemini/gemini-cli（以仓库 README / 发布说明为准）
+
+<Aside type="tip">
+	官方通道的额度、地区可用性与条款以 Google 当前说明为准；若登录页无法打开，先检查网络与账号地区限制。
+</Aside>
+
+## 方式二：CC Switch 配自定义 API / 中转
+
+1. 在 [CC Switch](/config-manager/cc-switch/) 添加供应商  
+2. 勾选 **Gemini CLI**  
+3. 填写 Key 与 `{{API_BASE_URL}}`  
+4. 启用后新开终端使用  
+
+CC Switch 通常会写入 `~/.gemini/.env` 与相关 settings。
+
+## 方式三：手动配置自定义 API / 中转
+
+常见环境变量（名称可能随版本变化）：
+
+```bash
+export GEMINI_API_KEY="sk-你的密钥"
+export GOOGLE_GEMINI_BASE_URL="{{API_BASE_URL}}"
+```
+
+具体键名以 Gemini CLI 当前版本文档为准。
+
+## 验证
+
+<Steps>
+
+1. 新开终端
+2. 启动 Gemini CLI（常见命令为 `gemini`）
+3. 发送测试消息
+
+</Steps>
+
+## 常见问题
+
+- **想回官方**：去掉自定义 Base URL / 停用 CC Switch 中的 Gemini 供应商，重新走官方登录或官方 Key  
+- **分组错误（中转）**：Key 需具备 Gemini 相关分组  
+- **404 / 模型不存在**：核对模型 ID  
+- **配置不生效**：确认环境变量文件已被加载，或重启终端  

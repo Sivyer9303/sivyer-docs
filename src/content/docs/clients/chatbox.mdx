@@ -1,0 +1,45 @@
+---
+title: Chatbox
+description: 使用 Chatbox 桌面客户端接入 OpenAI 兼容 API。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想要一个简单、跨平台的 AI 聊天客户端的用户。
+
+- 项目参考：https://github.com/chatboxai/chatbox  
+
+## 安装
+
+从 Chatbox 发布页下载 Windows / macOS 安装包并安装。
+
+## 配置
+
+<Steps>
+
+1. 打开设置 → 模型 / API
+2. 选择 OpenAI API 兼容或自定义提供商
+3. 填写：
+   - API Host / Base URL：`{{API_BASE_URL}}/v1`
+   - API Key：`sk-...`
+4. 填写模型名 `{{MODEL_NAME}}`
+5. 保存并新建对话测试
+
+</Steps>
+
+![Chatbox API 设置页](/screenshots/Chatbox-01-API设置页.png)
+
+## 验证
+
+发送「你好」，能回复即成功。
+
+## 常见问题
+
+- **404**：尝试增减 `/v1`  
+- **401**：检查 Key  
+- **模型错误**：换成服务商真实模型名  

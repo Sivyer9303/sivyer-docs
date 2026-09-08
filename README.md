@@ -5,6 +5,12 @@
 - 框架：[Astro Starlight](https://starlight.astro.build/)
 - 特点：左侧多篇导航 + 长文右侧目录跳转 + Markdown 维护
 
+## 主题
+
+当前使用 [Starlight Nova](https://starlight-theme-nova.pages.dev/)。
+
+内容写作约定见 [`docs/CONTENT_TEMPLATE.md`](./docs/CONTENT_TEMPLATE.md)。
+
 ## 本地开发
 
 ```bash

@@ -1,0 +1,51 @@
+---
+title: 配置速查
+description: Base URL、Key、占位符与常用工具入口速查。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+
+<SponsorBanner />
+
+## 占位符
+
+| 占位符 | 含义 |
+| --- | --- |
+| `{{API_BASE_URL}}` | API 根地址 |
+| `{{API_BASE_URL}}/v1` | OpenAI 兼容常见地址 |
+| `{{MODEL_NAME}}` | 完整模型名 |
+
+若使用推荐服务 Sivyer，根地址一般为 `https://www.sivyer.cc`（仅作示例；浏览器打开官网需自备魔法，正文其他章节仍用占位符）。
+
+## 推荐阅读入口
+
+| 需求 | 页面 |
+| --- | --- |
+| 注册拿 Key | [获取 API 服务](/getting-started/get-api-service/) |
+| 多 CLI 统一配置 | [CC Switch](/config-manager/cc-switch/) |
+| Codex 桌面端配置 | [Codex 桌面版](/coding/codex-desktop/) / [Codex++](/config-manager/codex-plus-plus/) |
+| Claude Code 桌面端配置 | [Claude Code 桌面版](/coding/claude-code-desktop/) |
+| 写代码 | [Claude Code](/coding/claude-code/) / [Codex](/coding/codex/) / [Cursor](/coding/cursor/) |
+| Agent | [OpenClaw](/agents/openclaw/) / [Hermes](/agents/hermes/) / [OpenCode](/agents/opencode/) |
+| 聊天 / 生图 | [Cherry Studio](/clients/cherry-studio/) / [生图 4K](/clients/cherry-studio-image/) |
+
+## 4K 参数速查
+
+```json
+// imageConfig
+{ "aspectRatio": "9:16", "imageSize": "4K" }
+```
+
+```json
+// responseModalities
+["TEXT", "IMAGE"]
+```
+
+## 下载入口（官方）
+
+| 工具 | 链接 |
+| --- | --- |
+| Cherry Studio | https://github.com/CherryHQ/cherry-studio/releases |
+| CC Switch | https://github.com/farion1231/cc-switch/releases |
+| Cursor | https://cursor.com ；自定义供应商用 [Cursor++ / CCursor](https://github.com/CometixSpace/CCursor) |
+| DeepChat | https://deepchat.thinkinai.xyz |

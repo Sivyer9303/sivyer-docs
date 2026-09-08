@@ -1,0 +1,47 @@
+---
+title: 验证是否配置成功
+description: 配置完成后的通用自检清单。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+
+<SponsorBanner />
+
+## 通用清单
+
+1. [ ] 已有 Base URL 与 API Key  
+2. [ ] 账户有余额  
+3. [ ] Key 已启用，分组与目标模型一致  
+4. [ ] 客户端里的地址没有多写 `/chat/completions`  
+5. [ ] Key 无首尾空格、未截断  
+6. [ ] 模型名与定价页完全一致  
+7. [ ] 能收到一次成功回复 / 成功出图  
+8. [ ] （可选）控制台用量有新增  
+
+## 快速连通性测试（OpenAI 兼容）
+
+把占位符换成你的值：
+
+```bash
+curl {{API_BASE_URL}}/v1/chat/completions \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "messages": [{"role": "user", "content": "你好，请只回复：配置成功"}]
+  }'
+```
+
+返回正常 JSON 且含模型回复，说明网关、Key、分组基本通了。
+
+## 分工具快速验证
+
+| 工具 | 怎么确认 |
+| --- | --- |
+| Claude Code | 新开终端运行 `claude`，发一句测试 |
+| Codex | 新开终端运行 `codex`，确认走自定义 provider |
+| Cursor | Cursor++（CCursor）BYOK 对话成功 |
+| OpenClaw / Hermes | 按各章「验证」小节操作 |
+| Cherry Studio | 聊天或绘画页成功出结果 |
+
+失败时优先看 [FAQ](/faq/)。

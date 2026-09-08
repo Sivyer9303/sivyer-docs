@@ -1,0 +1,116 @@
+---
+title: Claude Code 桌面版
+description: 在 Claude Desktop 的 Code 工作区使用官方 Claude 账号，或接入第三方网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+想用 **图形界面** 跑 Claude Code（看 Diff、多会话、本地仓库）的用户：可用官方 Claude 订阅，也可接自定义网关 / 中转。
+
+本页讲的是 **Claude Desktop 里的 Code 工作区**，不是终端里的 `claude` CLI。
+
+| | Claude Code CLI | Claude Code 桌面版 |
+| --- | --- | --- |
+| 入口 | 终端命令 `claude` | [Claude Desktop](https://claude.com/download) → **Code** 标签 |
+| 官方账号 | `/login` 选 Claude 订阅 | 应用内用 claude.ai 账号登录 |
+| 自定义网关 | `~/.claude/settings.json` 的 `env` | 应用内 **Third-Party Inference** |
+| 是否读 settings.json | 是 | **否**（桌面端不读 `ANTHROPIC_BASE_URL` / `settings.json`） |
+
+CLI 教程见 [Claude Code CLI](/coding/claude-code/)。
+
+## 安装
+
+1. 打开官网下载页：https://claude.com/download  
+2. 安装 **Claude Desktop**（macOS / Windows；Linux 见官方文档）  
+3. 启动应用  
+
+官方桌面说明：https://code.claude.com/docs/en/desktop  
+
+Windows 首次使用 Code 工作区时，通常还需要本机已安装 Git，装完后重启应用。
+
+## 选哪种方式
+
+| 方式 | 适合 |
+| --- | --- |
+| **官方 Claude 账号** | 已有 Pro / Max / Team / Enterprise，想用官方云端能力 |
+| **第三方网关** | 使用自建或中转 API，不走 Anthropic 官方账号额度 |
+
+## 方式一：官方 Claude 账号（推荐有订阅时）
+
+1. 确认账号已升级到含 Claude Code 的计划（常见为 Pro / Max / Team / Enterprise；以官网当前说明为准）  
+2. 打开 Claude Desktop，用与 [claude.ai](https://claude.ai) **相同的账号**登录  
+3. 进入 **Code** 工作区，按引导完成首次设置（如选择工作目录、信任提示）  
+4. 新建会话，发送测试消息  
+
+不要启用 **Configure Third-Party Inference**；一旦配了 Gateway，会话会改走网关，且部分官方云端能力可能不可用。
+
+若以前配过第三方推理、现在想回官方：
+
+1. 打开 **Developer → Configure Third-Party Inference…**（需先 Enable Developer Mode）  
+2. 清除 / 关闭 Gateway 配置，或按界面恢复默认  
+3. 重启应用后重新用 Claude 账号登录，再进 Code 工作区  
+
+## 方式二：配置第三方网关
+
+官方要求：桌面端网关走 **应用内第三方推理配置**，不要去改 CLI 的 `settings.json`。
+
+**前置：** API Key、网关 Base URL（`{{API_BASE_URL}}`，需支持 Anthropic Messages，常见 `/v1/messages`）、模型名 `{{MODEL_NAME}}`；能访问该地址（若站点屏蔽大陆 IP，需自备魔法）。
+
+1. 打开 Claude Desktop，先停在登录/主界面即可（不必先用官方账号完成全部 onboarding）
+2. 打开菜单：
+   - **macOS**：顶部菜单栏 → **Help** → **Troubleshooting** → **Enable Developer Mode**
+   - **Windows**：登录界面左上角应用菜单 **☰** → **Help** → **Troubleshooting** → **Enable Developer Mode**
+3. 应用会重启并出现 **Developer** 菜单
+4. 打开 **Developer** → **Configure Third-Party Inference…**
+5. 在 **Connection** 中按下面表格填写
+6. 如界面提供 **Test model discovery / 测试连接**，先测通再保存
+7. 选择 **Apply locally**（本机生效）并按提示重启应用
+8. 进入 **Code** 工作区，新建会话，发送一句测试（如：`请只回复：配置成功`）
+
+| 字段 | 建议填写 |
+| --- | --- |
+| Inference provider | **Gateway** |
+| Gateway base URL | `{{API_BASE_URL}}` |
+| Gateway API key | `sk-你的密钥` |
+| Credential kind | **Static API key** |
+| Gateway auth scheme | 先试 **Bearer**；若网关要求 `x-api-key` 再改成 **x-api-key** |
+
+![Claude Code 桌面版：第三方推理 / Gateway 配置](/screenshots/ClaudeCode桌面-01-第三方推理配置.png)
+
+![Claude Code 桌面版：Code 工作区对话成功](/screenshots/ClaudeCode桌面-02-对话成功.png)
+
+<Aside type="caution" title="不要混用 CLI 配置">
+	给桌面版配中转时，**不要**指望只改 `~/.claude/settings.json` 就会生效。那是 CLI / 部分扩展路径；桌面端官方明确读取的是 Third-Party Inference。
+</Aside>
+
+## 第三方网关生效后的能力限制（官方行为）
+
+开启网关后，桌面端通常只跑 **本机会话**：环境选择里可能看不到 SSH / Anthropic 云端环境，Remote Control 也可能不可用。这是官方文档描述的预期行为，不是你配错了。
+
+若必须在远程主机上用网关，应在那台机器上使用 [Claude Code CLI](/coding/claude-code/)。
+
+## 验证
+
+1. 官方路径：Code 工作区能正常回复，且账号为你的 Claude 订阅  
+2. 网关路径：配置页测试连接通过（若有），且控制台有用量（可选）  
+3. 故意改错 Key（网关场景）应失败，改回后恢复  
+
+## 常见问题
+
+- **Code 入口灰掉 / 不可用**：当前账号计划可能不含 Claude Code，先到 https://claude.ai/upgrade 确认  
+- **Gateway was unreachable**：Base URL 写错或网络不通；先测通 `{{API_BASE_URL}}`  
+- **改了 settings.json 没效果**：桌面版不读它；网关请用 Third-Party Inference；官方请用账号登录  
+- **401 / 鉴权失败（网关）**：切换 Bearer 与 x-api-key；确认 Key 与分组  
+- **想回官方却仍走网关**：清除 Third-Party Inference 后重启并重新登录 Claude 账号  
+- **企业 MDM / 托管配置已存在**：管理员下发的配置优先，本机表单可能只读  
+
+更完整的官方说明见：
+
+- https://code.claude.com/docs/en/desktop  
+- https://code.claude.com/docs/en/llm-gateway-connect（Desktop app 小节）  
+- https://claude.com/docs/third-party/claude-desktop/gateway  

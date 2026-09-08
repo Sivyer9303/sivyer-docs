@@ -1,44 +1,50 @@
 ---
-title: Sivyer 中转站文档
-description: Sivyer NewAPI 中转站使用文档首页。从注册、创建 Key，到工具配置与 Cherry Studio 生图。
+title: AI 工具文档
+description: 通用 AI 工具使用文档：编程助手、Agent、桌面客户端与生图。文首提供可选 API 服务推荐。
 template: splash
 hero:
-  tagline: 面向小白的 NewAPI 中转站图文教程。左侧目录切换篇章，长文右侧大纲一键跳转。
+  tagline: 正文保持通用；文首可放置服务推荐。从获取 Key，到配置 Claude Code / OpenClaw / Cherry Studio。
   actions:
     - text: 从这里开始
       link: /getting-started/overview/
       icon: right-arrow
-    - text: 打开中转站
-      link: https://www.sivyer.cc
+    - text: 获取 API 服务
+      link: /getting-started/get-api-service/
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip" title="还没有 API 服务？">
+	先看 [如何获取 API 服务](/getting-started/get-api-service/)。若你已有 Base URL 与 API Key，可直接进入对应工具教程。
+</Aside>
 
 ## 快速入口
 
-<CardGrid stagger>
-	<Card title="注册与登录" icon="rocket">
-		打开 [www.sivyer.cc](https://www.sivyer.cc)，完成注册并确认余额。
-		查看 [注册与登录](/getting-started/register/)。
+<CardGrid>
+	<Card title="获取 API 服务" icon="rocket">
+		准备 Base URL 与 API Key。
+		查看 [如何获取 API 服务](/getting-started/get-api-service/)。
 	</Card>
-	<Card title="创建 API Key" icon="approve-check">
-		在控制台创建密钥，并按用途选择正确分组。
-		查看 [创建 Key 与分组](/getting-started/create-key/)。
+	<Card title="Codex 安装" icon="puzzle">
+		安装 Codex 桌面版，支持官方账号或自定义网关。
+		查看 [Codex 桌面版](/coding/codex-desktop/)。
 	</Card>
-	<Card title="配置客户端" icon="setting">
-		用 Cherry Studio / CC Switch 一键配置，或自行手改。
-		查看 [配置中转站](/configure/)。
+	<Card title="Claude Code 安装" icon="seti:claude">
+		安装 Claude Code CLI，支持订阅登录或中转配置。
+		查看 [Claude Code CLI](/coding/claude-code/)。
 	</Card>
-	<Card title="Cherry Studio 生图" icon="document">
-		设置分辨率、质量、比例；默认绘画不出 4K 时用手动参数。
-		查看 [生图详解](/cherry-studio/image-generation/)。
+	<Card title="Cherry 生图" icon="document">
+		分辨率、质量、比例与 4K 手动设置。
+		查看 [生图详解](/clients/cherry-studio-image/)。
 	</Card>
 </CardGrid>
 
-## 维护说明
+## 文档怎么读
 
-- 文档源文件在仓库 `src/content/docs/` 下，改 Markdown / MDX 即可更新。
-- 新增一篇文档：新建 `.md` 文件，并在 `astro.config.mjs` 的 `sidebar` 里加一项。
-- 长文会自动生成右侧目录（On this page），点击即可跳转到对应标题。
+1. 先完成「开始使用」拿到 Key  
+2. 要用 npm 安装的 CLI / Agent 时，先完成 [安装 Node.js 与 npm](/basics/nodejs-npm/)  
+3. 若用多个 CLI / Agent，优先装 [CC Switch](/config-manager/cc-switch/)；若主用 Codex 桌面端，看 [Codex++](/config-manager/codex-plus-plus/)  
+4. 再打开你真正使用的工具章节  
+5. 正文里的 `{{API_BASE_URL}}` 请替换成你的服务商地址  

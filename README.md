@@ -53,18 +53,30 @@ npm run build
 
 ## 部署到 Cloudflare Pages（建议）
 
-1. 把本仓库推到 GitHub（已完成后可跳过）
-2. Cloudflare Dashboard → Workers & Pages → Create → Connect to Git
-3. 构建设置：
-   - **Framework preset:** Astro（或 None）
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Node version:** `22`（或 `20`）
-4. 可选绑定自定义域名，例如 `docs.sivyer.cc`
+本站是 **纯静态** Starlight 站点（`astro build` → `dist/`），**不要**用 `wrangler deploy`，也**不要**加 `@astrojs/cloudflare` 适配器。
 
-也可使用 Wrangler：
+1. 把本仓库推到 GitHub（已完成后可跳过）
+2. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
+3. 选仓库 `sivyer-docs`，构建设置：
+
+| 项 | 值 |
+| --- | --- |
+| Production branch | `main` |
+| Framework preset | `Astro` 或 `None` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| **Deploy command** | **留空**（不要填 `npx wrangler deploy`） |
+| Environment variable | `NODE_VERSION` = `22`（可选；默认 Node 24 也可） |
+
+4. Save and Deploy。成功后会有 `*.pages.dev` 预览地址
+5. **Custom domains** 绑定例如 `docs.sivyer.cc`
+
+若构建日志里先出现 `Build Complete!`，随后又执行 `npx wrangler deploy` 并失败：说明 Deploy command 配错了，到项目 **Settings → Builds** 把 Deploy command 清空后重新部署即可。
+
+也可本地构建后用 Wrangler 仅上传静态资源（一般不需要）：
 
 ```bash
+npm run build
 npx wrangler pages deploy dist
 ```
 

@@ -53,17 +53,24 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 
 处理：只保留一个配置入口；重启终端。
 
-## Cherry 绘画没有模型
+## Windows 上找不到 `~/.claude` / `~/.codex` 这类路径
 
-把模型端点类型改为 **图像生成（OpenAI）**。详见 [生图教程](/clients/cherry-studio-image/)。
+文档里的 `~/...` 是用户主目录简写，不是项目目录。Windows 请换成 `%USERPROFILE%\...`（例如 `%USERPROFILE%\.claude\settings.json`），在资源管理器地址栏粘贴即可。完整约定见 [这是什么 → 配置文件路径约定](/getting-started/overview/#配置文件路径约定)。
+
+## Cherry 绘画没有模型 / 助手选不到 gpt-image
+
+- **`gpt-image-*`**：端点类型改为 **图像生成（OpenAI）**，到启动台 **绘画** 页选用；助手列表选不到是正常的。  
+- **要 4K**：不要用 `gpt-image`，改用 Gemini 生图 + 助手自定义参数。  
+
+详见 [生图教程](/clients/cherry-studio-image/)。
 
 ## 调不出 4K
 
-默认绘画页通常没有 4K。请用助手自定义参数 `imageConfig.imageSize = "4K"`。见 [生图教程](/clients/cherry-studio-image/)。
+绘画页（含 `gpt-image`）通常没有真正的 4K。请用 **Gemini 生图模型** + 助手参数 `imageConfig.imageSize = "4K"`。见 [生图教程](/clients/cherry-studio-image/)。
 
 ## quality=high 但不够清晰
 
-质量与分辨率不是一回事。需要提高 `imageSize` / 像素尺寸。
+质量与分辨率不是一回事。`gpt-image` 请改尺寸枚举；Gemini 请提高 `imageSize`（`1K`/`2K`/`4K`）。
 
 ## OpenClaw / Hermes 命令找不到
 

@@ -1,0 +1,426 @@
+---
+title: 自己封装请求
+description: 不依赖现成客户端，用 HTTP / 官方 SDK 直接调用网关的 AI 接口（聊天、Responses、Claude、Gemini、嵌入、生图等）。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+要自己写后端、脚本、Bot 或小工具，**直接 HTTP 调模型**，而不是用 Cherry / Claude Code / Cursor 这类现成客户端。
+
+前提：
+
+1. 已有 Base URL 与 API Key（见 [创建 API Key 与分组](/getting-started/create-key/)）  
+2. 知道要用的模型名 `{{MODEL_NAME}}`（与定价页完全一致）  
+3. 先弄清协议：见 [协议说明](/reference/protocols/)  
+
+连通性可先跑 [验证页的 curl](/getting-started/verify/)。字段级 OpenAPI 以你网关文档为准；兼容 [New API](https://docs.newapi.pro/zh/docs/api) 一类网关时，下文端点与认证方式与其 AI 模型接口一致。
+
+## 地址与认证
+
+OpenAI 兼容调用通常把客户端 `base_url` / `baseURL` 设为：
+
+```text
+{{API_BASE_URL}}/v1
+```
+
+请求头（多数 OpenAI 风格接口）：
+
+```http
+Authorization: Bearer sk-你的密钥
+Content-Type: application/json
+```
+
+注意：
+
+- **不要**把 `.../v1/chat/completions` 整段塞进 Base URL（除非你自己拼完整 URL）  
+- Claude 原生接口除 Bearer 外，还需 `anthropic-version`；也可用 `x-api-key`  
+- Gemini 原生可用查询参数 `key=` 或请求头 `x-goog-api-key`  
+- Key 等同密码：不要写进公开仓库、截图、日志  
+
+## AI 调用端点一览
+
+仅列**模型调用**相关路径（不含后台管理接口）。服务端是否开通某能力，以你的分组 / 渠道为准。
+
+| 能力 | 方法与路径 | 说明 |
+| --- | --- | --- |
+| 聊天补全 | `POST /v1/chat/completions` | OpenAI Chat Completions；需 `model`、`messages`；支持 `stream` |
+| Responses | `POST /v1/responses` | OpenAI Responses；支持工具、推理等 |
+| 文本补全 | `POST /v1/completions` | 传统补全；需 `model`、`prompt` |
+| Claude Messages | `POST /v1/messages` | Anthropic 格式；需 `anthropic-version`、`max_tokens` |
+| Gemini 原生 | `POST /v1beta/models/{model}:{action}` | 如 `generateContent`、`streamGenerateContent` |
+| Gemini 兼容 | `POST /v1/models/{model}:{action}` | `/v1` 前缀的 Gemini 风格 |
+| 嵌入 | `POST /v1/embeddings` | 需 `model`、`input` |
+| 重排序 | `POST /v1/rerank` | 需 `model`、`query`、`documents` |
+| 内容审核 | `POST /v1/moderations` | 文本等安全检查 |
+| 图像生成 | `POST /v1/images/generations` | 文生图 |
+| 图像编辑 | `POST /v1/images/edits` | 图生图 / 编辑 |
+| 语音转文字 | `POST /v1/audio/transcriptions` | Whisper 等 |
+| 音频翻译 | `POST /v1/audio/translations` | 识别并译成英文文本（OpenAI 风格） |
+| 文字转语音 | `POST /v1/audio/speech` | TTS |
+| 实时语音 | `GET /v1/realtime`（WebSocket） | 如 `wss://主机/v1/realtime?model=...` |
+| 视频生成 | `POST /v1/video/generations` | 异步任务，返回 `task_id` 后再查状态 |
+| 模型列表 | `GET /v1/models` | 默认 OpenAI 格式；带 Anthropic / Gemini 头时返回对应格式 |
+| 模型详情 | `GET /v1/models/{model}` | 不存在时常见 `model_not_found` |
+
+网页游乐场专用 `POST /pg/chat/completions` 依赖登录会话，**不适合**自己封装的服务端调用，请用 `/v1/...`。
+
+## 聊天补全（最常用）
+
+`POST {{API_BASE_URL}}/v1/chat/completions`
+
+常见字段：`model`、`messages`（必填）；`temperature`、`top_p`、`max_tokens` / `max_completion_tokens`、`stream`、`tools` 等可选。
+
+### 各语言示例
+
+<Tabs>
+<TabItem label="cURL">
+
+```bash
+curl {{API_BASE_URL}}/v1/chat/completions \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "messages": [
+      {"role": "user", "content": "你好，请只回复：配置成功"}
+    ]
+  }'
+```
+
+</TabItem>
+<TabItem label="Python">
+
+```bash
+pip install openai
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-你的密钥",
+    base_url="{{API_BASE_URL}}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="{{MODEL_NAME}}",
+    messages=[{"role": "user", "content": "你好，请只回复：配置成功"}],
+)
+print(resp.choices[0].message.content)
+```
+
+流式：
+
+```python
+stream = client.chat.completions.create(
+    model="{{MODEL_NAME}}",
+    messages=[{"role": "user", "content": "用一句话介绍你自己"}],
+    stream=True,
+)
+for chunk in stream:
+    delta = chunk.choices[0].delta.content or ""
+    print(delta, end="", flush=True)
+```
+
+</TabItem>
+<TabItem label="JavaScript / Node">
+
+```bash
+npm install openai
+```
+
+```js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "sk-你的密钥",
+  baseURL: "{{API_BASE_URL}}/v1",
+});
+
+const resp = await client.chat.completions.create({
+  model: "{{MODEL_NAME}}",
+  messages: [{ role: "user", content: "你好，请只回复：配置成功" }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+纯 `fetch`（不装 SDK）：
+
+```js
+const res = await fetch("{{API_BASE_URL}}/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer sk-你的密钥",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    model: "{{MODEL_NAME}}",
+    messages: [{ role: "user", content: "你好，请只回复：配置成功" }],
+  }),
+});
+const data = await res.json();
+console.log(data.choices?.[0]?.message?.content);
+```
+
+</TabItem>
+<TabItem label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	body := map[string]any{
+		"model": "{{MODEL_NAME}}",
+		"messages": []map[string]string{
+			{"role": "user", "content": "你好，请只回复：配置成功"},
+		},
+	}
+	b, _ := json.Marshal(body)
+	req, _ := http.NewRequest(
+		"POST",
+		"{{API_BASE_URL}}/v1/chat/completions",
+		bytes.NewReader(b),
+	)
+	req.Header.Set("Authorization", "Bearer sk-你的密钥")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	out, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(out))
+}
+```
+
+也可用官方 Go SDK，把 `BaseURL` 指到 `{{API_BASE_URL}}/v1`。
+
+</TabItem>
+<TabItem label="Java">
+
+```java
+// 依赖：com.openai:openai-java（版本以 Maven Central 为准）
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
+
+OpenAIClient client = OpenAIOkHttpClient.builder()
+    .apiKey("sk-你的密钥")
+    .baseUrl("{{API_BASE_URL}}/v1")
+    .build();
+
+var params = ChatCompletionCreateParams.builder()
+    .model("{{MODEL_NAME}}")
+    .addUserMessage("你好，请只回复：配置成功")
+    .build();
+
+var completion = client.chat().completions().create(params);
+System.out.println(completion.choices().get(0).message().content());
+```
+
+若 SDK API 与版本不完全一致，用 OkHttp / HttpClient 按下方 JSON 自行 POST 即可。
+
+</TabItem>
+<TabItem label="C#">
+
+```csharp
+// NuGet: OpenAI
+using OpenAI;
+using OpenAI.Chat;
+
+var client = new ChatClient(
+    model: "{{MODEL_NAME}}",
+    credential: new System.ClientModel.ApiKeyCredential("sk-你的密钥"),
+    options: new OpenAIClientOptions
+    {
+        Endpoint = new Uri("{{API_BASE_URL}}/v1")
+    });
+
+ChatCompletion completion = client.CompleteChat("你好，请只回复：配置成功");
+Console.WriteLine(completion.Content[0].Text);
+```
+
+包版本不同时构造函数可能略有差异；也可用 `HttpClient` 直接 POST JSON。
+
+</TabItem>
+</Tabs>
+
+成功时响应大致为 OpenAI 风格：`choices[0].message.content`，并带 `usage`。错误体常见：
+
+```json
+{
+  "error": {
+    "message": "...",
+    "type": "...",
+    "code": "..."
+  }
+}
+```
+
+HTTP `400` / `401` / `429` 等含义见 [FAQ](/faq/)。
+
+## 其他协议与能力（精简示例）
+
+### OpenAI Responses
+
+`POST {{API_BASE_URL}}/v1/responses` — Codex 等新链路常用。
+
+```bash
+curl {{API_BASE_URL}}/v1/responses \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "input": "你好，请只回复：配置成功"
+  }'
+```
+
+### Claude Messages
+
+`POST {{API_BASE_URL}}/v1/messages` — 需 `anthropic-version`；`max_tokens` 必填。
+
+```bash
+curl {{API_BASE_URL}}/v1/messages \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "x-api-key: sk-你的密钥" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "你好"}]
+  }'
+```
+
+Python（Anthropic SDK）：
+
+```python
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key="sk-你的密钥",
+    base_url="{{API_BASE_URL}}",
+)
+msg = client.messages.create(
+    model="{{MODEL_NAME}}",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "你好"}],
+)
+print(msg.content)
+```
+
+### Gemini 原生
+
+```bash
+curl "{{API_BASE_URL}}/v1beta/models/{{MODEL_NAME}}:generateContent?key=sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{"contents":[{"parts":[{"text":"你好"}]}]}'
+```
+
+流式可用 `:streamGenerateContent?alt=sse`。
+
+### 嵌入
+
+```bash
+curl {{API_BASE_URL}}/v1/embeddings \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "input": "要向量化的文本"
+  }'
+```
+
+### 图像生成
+
+```bash
+curl {{API_BASE_URL}}/v1/images/generations \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "prompt": "一只在月球上的猫，插画风",
+    "n": 1,
+    "size": "1024x1024"
+  }'
+```
+
+### 重排序
+
+```bash
+curl {{API_BASE_URL}}/v1/rerank \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "query": "什么是向量数据库",
+    "documents": ["文档 A …", "文档 B …"],
+    "top_n": 3
+  }'
+```
+
+### 模型列表
+
+```bash
+curl {{API_BASE_URL}}/v1/models \
+  -H "Authorization: Bearer sk-你的密钥"
+```
+
+### 实时语音（WebSocket）
+
+```text
+wss://你的主机/v1/realtime?model=gpt-4o-realtime
+```
+
+鉴权可用 Bearer，或按网关说明使用 WebSocket 子协议传 Key。这是双向实时通道，不是普通 REST POST。
+
+### 视频生成（异步）
+
+```bash
+# 创建任务
+curl {{API_BASE_URL}}/v1/video/generations \
+  -H "Authorization: Bearer sk-你的密钥" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "{{MODEL_NAME}}",
+    "prompt": "海浪拍打礁石，电影感"
+  }'
+# 响应示例：{"task_id":"...","status":"queued"}
+# 再用网关提供的 GET 状态接口轮询
+```
+
+## 流式输出注意点
+
+- Chat Completions：`"stream": true`，响应为 **SSE**（`data: {...}` 行，结束常见 `data: [DONE]`）  
+- 自封装时请按行解析，不要当整段 JSON `JSON.parse` 一次  
+- 反向代理 / CDN 可能缓冲 SSE，需关闭缓冲或设合适超时  
+- Responses / Claude / Gemini 的流式字段与事件名不同，按对应协议解析  
+
+## 自检清单
+
+1. Base URL 是否为 `{{API_BASE_URL}}` 或 `{{API_BASE_URL}}/v1`（按协议）  
+2. Key 是否完整、已启用、分组含该模型  
+3. 模型名是否与定价页一致  
+4. Claude 是否带了 `anthropic-version`  
+5. 流式客户端是否按 SSE 读  
+
+仍失败时对照 [FAQ](/faq/) 与 [协议说明](/reference/protocols/)。
+
+<Aside type="tip" title="完整字段表">
+	各接口的全部请求/响应字段、枚举值以你所用网关的 OpenAPI 为准。New API 兼容部署可浏览其 [API 参考 · AI 模型接口](https://docs.newapi.pro/zh/docs/api)（页面内常见 cURL / JavaScript / Go / Python / Java / C# 示例）。
+</Aside>

@@ -19,7 +19,7 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 | 安装 | `npm install -g @openai/codex` | 官方桌面安装包 |
 | 日常入口 | 终端 `codex` | Codex App 窗口 |
 | 官方账号 | `codex login` | App 内 Sign in with ChatGPT |
-| 自定义供应商 | `~/.codex/config.toml` / CC Switch | 同上（App：Settings → Configuration → Open config.toml） |
+| 自定义供应商 | `~/.codex/config.toml`（Windows：`%USERPROFILE%\.codex\config.toml`）/ CC Switch | 同上（App：Settings → Configuration → Open config.toml） |
 | 图形化增强 | — | 可用 [Codex++](/config-manager/codex-plus-plus/) |
 
 下载页：https://developers.openai.com/codex/app  
@@ -42,7 +42,7 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## 方式一：官方 ChatGPT 账号（推荐有订阅时）
 
-1. 确认没有启用会劫持请求的自定义供应商（Codex++ 里不要开「纯 API」指向中转；`~/.codex/config.toml` 不要把 `model_provider` 指到自定义网关）  
+1. 确认没有启用会劫持请求的自定义供应商（Codex++ 里不要开「纯 API」指向中转；用户级 `config.toml` 不要把 `model_provider` 指到自定义网关）  
 2. 打开 Codex 桌面 App  
 3. 在登录界面选择 **Sign in with ChatGPT**，浏览器完成登录  
 4. 回到 App，新建任务做一次简单测试  
@@ -66,11 +66,15 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## 方式三：在桌面 App 中改 config.toml（自定义网关）
 
-官方路径：个人默认配置写在用户级 `~/.codex/config.toml`。  
-可在 App 内打开：**Settings → Configuration → Open config.toml**。
+官方路径：个人默认配置写在用户级 `config.toml`：
+
+- macOS / Linux：`~/.codex/config.toml`
+- Windows：`%USERPROFILE%\.codex\config.toml`
+
+可在 App 内打开：**Settings → Configuration → Open config.toml**（不必手找路径）。
 
 <Aside type="caution" title="供应商必须写在用户级配置">
-	`model_provider` / `model_providers` 等键写在项目内 `.codex/config.toml` **不会生效**（官方会忽略）。自定义中转请只改 `~/.codex/config.toml`。
+	`model_provider` / `model_providers` 等键写在项目内 `.codex/config.toml` **不会生效**（官方会忽略）。自定义中转请只改用户级 `config.toml`（见上方路径）。
 </Aside>
 
 ### 最小可用示例
@@ -97,9 +101,12 @@ env_key = "MY_GATEWAY_API_KEY"
 桌面进程常常**读不到**你在终端里 `export` 的变量，需要另设一种持久方式：
 
 <Tabs>
-<TabItem label="推荐：~/.codex/.env">
+<TabItem label="推荐：用户级 .env">
 
-在用户目录创建或编辑 `~/.codex/.env`（与 `config.toml` 同级）：
+在用户目录创建或编辑 `.env`（与 `config.toml` 同级）：
+
+- macOS / Linux：`~/.codex/.env`
+- Windows：`%USERPROFILE%\.codex\.env`
 
 ```bash
 MY_GATEWAY_API_KEY=sk-你的密钥
@@ -133,9 +140,9 @@ launchctl setenv MY_GATEWAY_API_KEY "sk-你的密钥"
 5. **完全退出** Codex（确认托盘/后台进程也退出）后重新打开  
 6. 新建任务，发送一句简单测试  
 
-![Codex 桌面版：Settings 打开 config.toml](/screenshots/Codex桌面-01-打开config.svg)
+![Codex 桌面版：Settings 打开 config.toml](/screenshots/Codex桌面-01-打开config.png)
 
-![Codex 桌面版：自定义 model_providers 示例](/screenshots/Codex桌面-02-config示例.svg)
+![Codex 桌面版：自定义 model_providers 示例](/screenshots/Codex桌面-02-config示例.png)
 
 ## 验证
 
@@ -146,8 +153,8 @@ launchctl setenv MY_GATEWAY_API_KEY "sk-你的密钥"
 ## 常见问题
 
 - **想回官方登录**：去掉自定义 `model_provider` / 在 Codex++ 切回官方登录，Sign out 后再 Sign in with ChatGPT，并彻底重启 App  
-- **仍走官方 / 没走中转**：确认改的是 `~/.codex/config.toml`，且 `model_provider` 指向你的自定义 id  
-- **鉴权失败但终端里 CLI 正常**：桌面读不到 shell 环境变量；补 `~/.codex/.env`  
+- **仍走官方 / 没走中转**：确认改的是用户级 `config.toml`（`~/.codex/config.toml` / Windows：`%USERPROFILE%\.codex\config.toml`），且 `model_provider` 指向你的自定义 id  
+- **鉴权失败但终端里 CLI 正常**：桌面读不到 shell 环境变量；补用户级 `.env`（`~/.codex/.env` / Windows：`%USERPROFILE%\.codex\.env`）  
 - **协议错误 / wire_api**：网关需支持 Responses  
 - **Base URL 404 或路径重复**：检查是否多写了 `/v1/v1`，或误把 `/responses` 写进 `base_url`  
 - **项目里改了 config 无效**：`model_providers` 不能放在项目级 `.codex/config.toml`  

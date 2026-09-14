@@ -58,6 +58,9 @@ dsh --help
 
 最直接的方式是在启动前导出（优先级最高）：
 
+<Tabs>
+<TabItem label="macOS / Linux">
+
 ```bash
 export DEEPSEEK_API_KEY="sk-你的官方密钥"
 npx @deepseek-ai/dsh web
@@ -66,10 +69,29 @@ npx @deepseek-ai/dsh web
 也可以写入 `~/.dsh/.env` 作为兜底（优先级最低，且只在启动时读取一次）：
 
 ```bash
+mkdir -p ~/.dsh
 echo 'DEEPSEEK_API_KEY=sk-你的官方密钥' >> ~/.dsh/.env
 ```
 
-> 优先级从高到低：启动时环境变量 → `~/.dsh/.credentials.yaml`（Models 页保存的 Key 存在这里）→ 项目目录 `.env` → `~/.dsh/.env`。启动后再 `export` 不会被读取，需重启。
+</TabItem>
+<TabItem label="Windows PowerShell">
+
+```powershell
+$env:DEEPSEEK_API_KEY="sk-你的官方密钥"
+npx @deepseek-ai/dsh web
+```
+
+也可以写入 `%USERPROFILE%\.dsh\.env` 作为兜底：
+
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.dsh" | Out-Null
+Add-Content -Path "$env:USERPROFILE\.dsh\.env" -Value 'DEEPSEEK_API_KEY=sk-你的官方密钥'
+```
+
+</TabItem>
+</Tabs>
+
+> 优先级从高到低：启动时环境变量 → `~/.dsh/.credentials.yaml`（Windows：`%USERPROFILE%\.dsh\.credentials.yaml`；Models 页保存的 Key 存在这里）→ 项目目录 `.env` → 用户级 `.env`（`~/.dsh/.env` / `%USERPROFILE%\.dsh\.env`）。启动后再改环境变量不会被读取，需重启。
 
 </TabItem>
 <TabItem label="Web UI">
@@ -113,9 +135,12 @@ echo 'DEEPSEEK_API_KEY=sk-你的官方密钥' >> ~/.dsh/.env
 
 ![DeepSeek Harness：选用中转模型对话成功](/screenshots/DeepSeekHarness-02-对话成功.png)
 
-### 可选：手改 `~/.dsh/settings.yaml`
+### 可选：手改用户级 `settings.yaml`
 
-UI 保存后通常会写入设置。也可直接编辑（路径以本机 `$DSH_HOME`，默认 `~/.dsh`）：
+UI 保存后通常会写入设置。也可直接编辑（路径以本机 `$DSH_HOME` / `%DSH_HOME%` 为准，默认用户主目录下的 `.dsh`）：
+
+- macOS / Linux：`~/.dsh/settings.yaml`
+- Windows：`%USERPROFILE%\.dsh\settings.yaml`
 
 ```yaml
 llm-pi-ai:
@@ -135,10 +160,24 @@ llm-pi-ai:
 
 同时提供 Key（二选一即可）：
 
+<Tabs>
+<TabItem label="macOS / Linux">
+
 ```bash
 export MY_GATEWAY_API_KEY="sk-你的密钥"
 # 或写入 ~/.dsh/.env / 在 Models 页保存托管凭据
 ```
+
+</TabItem>
+<TabItem label="Windows PowerShell">
+
+```powershell
+$env:MY_GATEWAY_API_KEY="sk-你的密钥"
+# 或写入 %USERPROFILE%\.dsh\.env / 在 Models 页保存托管凭据
+```
+
+</TabItem>
+</Tabs>
 
 改完一般**下一轮请求即生效**，不必重启；不生效再重启 `dsh web`。
 

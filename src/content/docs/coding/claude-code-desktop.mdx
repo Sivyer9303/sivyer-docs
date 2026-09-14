@@ -18,7 +18,7 @@ import { Aside } from '@astrojs/starlight/components';
 | --- | --- | --- |
 | 入口 | 终端命令 `claude` | [Claude Desktop](https://claude.com/download) → **Code** 标签 |
 | 官方账号 | `/login` 选 Claude 订阅 | 应用内用 claude.ai 账号登录 |
-| 自定义网关 | `~/.claude/settings.json` 的 `env` | 应用内 **Third-Party Inference** |
+| 自定义网关 | CLI：`~/.claude/settings.json`（Windows：`%USERPROFILE%\.claude\settings.json`）的 `env` | 应用内 **Third-Party Inference** |
 | 是否读 settings.json | 是 | **否**（桌面端不读 `ANTHROPIC_BASE_URL` / `settings.json`） |
 
 CLI 教程见 [Claude Code CLI](/coding/claude-code/)。
@@ -80,12 +80,12 @@ Windows 首次使用 Code 工作区时，通常还需要本机已安装 Git，�
 | Credential kind | **Static API key** |
 | Gateway auth scheme | 先试 **Bearer**；若网关要求 `x-api-key` 再改成 **x-api-key** |
 
-![Claude Code 桌面版：第三方推理 / Gateway 配置](/screenshots/ClaudeCode桌面-01-第三方推理配置.svg)
+![Claude Code 桌面版：第三方推理 / Gateway 配置](/screenshots/ClaudeCode桌面-01-第三方推理配置.png)
 
-![Claude Code 桌面版：Code 工作区对话成功](/screenshots/ClaudeCode桌面-02-对话成功.svg)
+![Claude Code 桌面版：Code 工作区对话成功](/screenshots/ClaudeCode桌面-02-对话成功.png)
 
 <Aside type="caution" title="不要混用 CLI 配置">
-	给桌面版配中转时，**不要**指望只改 `~/.claude/settings.json` 就会生效。那是 CLI / 部分扩展路径；桌面端官方明确读取的是 Third-Party Inference。
+	给桌面版配中转时，**不要**指望只改 CLI 的 `settings.json`（`~/.claude/settings.json` / Windows：`%USERPROFILE%\.claude\settings.json`）就会生效。那是 CLI / 部分扩展路径；桌面端官方明确读取的是 Third-Party Inference。
 </Aside>
 
 ## 第三方网关生效后的能力限制（官方行为）

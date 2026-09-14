@@ -85,6 +85,7 @@ export default defineConfig({
 					items: [
 						{ label: '配置速查', slug: 'reference/cheatsheet' },
 						{ label: '协议说明', slug: 'reference/protocols' },
+						{ label: '自己封装请求', slug: 'reference/api-requests' },
 					],
 				},
 			],

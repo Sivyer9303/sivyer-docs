@@ -4,7 +4,7 @@ description: 安装 Google Gemini CLI：可用官方 Google / Gemini 登录，�
 ---
 
 import SponsorBanner from '../../../components/SponsorBanner.astro';
-import { Steps, Aside } from '@astrojs/starlight/components';
+import { Steps, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 <SponsorBanner />
 
@@ -49,16 +49,30 @@ npm install -g @google/gemini-cli
 3. 填写 Key 与 `{{API_BASE_URL}}`  
 4. 启用后新开终端使用  
 
-CC Switch 通常会写入 `~/.gemini/.env` 与相关 settings。
+CC Switch 通常会写入用户级 `~/.gemini/.env`（Windows：`%USERPROFILE%\.gemini\.env`）与相关 settings。
 
 ## 方式三：手动配置自定义 API / 中转
 
 常见环境变量（名称可能随版本变化）：
 
+<Tabs>
+<TabItem label="macOS / Linux">
+
 ```bash
 export GEMINI_API_KEY="sk-你的密钥"
 export GOOGLE_GEMINI_BASE_URL="{{API_BASE_URL}}"
 ```
+
+</TabItem>
+<TabItem label="Windows PowerShell">
+
+```powershell
+$env:GEMINI_API_KEY="sk-你的密钥"
+$env:GOOGLE_GEMINI_BASE_URL="{{API_BASE_URL}}"
+```
+
+</TabItem>
+</Tabs>
 
 具体键名以 Gemini CLI 当前版本文档为准。
 

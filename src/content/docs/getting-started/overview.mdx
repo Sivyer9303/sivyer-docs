@@ -37,7 +37,8 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 3. 若要用 CLI / Agent：先 [安装 Node.js 与 npm](/basics/nodejs-npm/)  
 4. [CC Switch](/config-manager/cc-switch/)（用多个 CLI/Agent 时强烈推荐）  
 5. 打开你实际使用的工具章节  
-6. 遇到报错查 [FAQ](/faq/)  
+6. 自己写代码调接口：看 [自己封装请求](/reference/api-requests/)  
+7. 遇到报错查 [FAQ](/faq/)  
 
 ## 占位符约定
 
@@ -46,3 +47,14 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 - `{{API_BASE_URL}}`：你的 API 根地址（一般**不要**带 `/chat/completions`）  
 - `{{API_BASE_URL}}/v1`：部分 OpenAI 兼容客户端需要带 `/v1`  
 - `{{MODEL_NAME}}`：服务商定价页/模型列表中的完整模型名  
+
+## 配置文件路径约定
+
+文档里常见的 `~/某目录/...` 表示**用户主目录**下的路径（不是项目目录）：
+
+| 写法 | 含义 |
+| --- | --- |
+| macOS / Linux | `~/.claude/settings.json`（`~` 即 `$HOME`） |
+| Windows | `%USERPROFILE%\.claude\settings.json`（资源管理器地址栏可直接粘贴；PowerShell 里用 `$env:USERPROFILE\.claude\settings.json`） |
+
+多数工具在 Windows 上仍使用「用户主目录下的点目录」（如 `.claude`、`.codex`），与 macOS / Linux 目录名一致，只是盘符与分隔符不同。文中若只写了 `~/...`，按上表换成 Windows 写法即可。

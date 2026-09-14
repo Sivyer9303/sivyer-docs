@@ -85,10 +85,10 @@ printenv OPENAI_API_KEY | codex login --with-api-key
 
 ## 方式四：手动配置自定义 API / 中转
 
-Codex 常见涉及：
+Codex 常见涉及（用户主目录；Windows 把 `~/` 换成 `%USERPROFILE%\`，斜杠可写成 `\`）：
 
-- `~/.codex/auth.json`（凭证缓存）  
-- `~/.codex/config.toml`（`model_provider`、`base_url`、`model`、`wire_api` 等）
+- `~/.codex/auth.json`（Windows：`%USERPROFILE%\.codex\auth.json`）— 凭证缓存  
+- `~/.codex/config.toml`（Windows：`%USERPROFILE%\.codex\config.toml`）— `model_provider`、`base_url`、`model`、`wire_api` 等  
 
 手动改容易漏字段，建议优先 CC Switch。若必须手改，以你本机 Codex 版本文档为准，并保证 `base_url` 指向 `{{API_BASE_URL}}`（通常还需 `wire_api = "responses"`）。更完整的桌面端手改示例见 [Codex 桌面版](/coding/codex-desktop/)。
 

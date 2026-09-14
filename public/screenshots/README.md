@@ -51,8 +51,6 @@
 | `Cherry生图-01-端点类型图像生成.svg` → 替换后变为 `Cherry生图-01-端点类型图像生成.png` | 端点类型改为图像生成 |
 | `Cherry生图-02-自定义参数4K.svg` → 替换后变为 `Cherry生图-02-自定义参数4K.png` | 自定义参数 imageConfig=4K |
 | `Cherry生图-03-查看图片分辨率.svg` → 替换后变为 `Cherry生图-03-查看图片分辨率.png` | 出图后查看分辨率属性 |
-| `Chatbox-01-API设置页.svg` → 替换后变为 `Chatbox-01-API设置页.png` | Chatbox API 设置页 |
-| `DeepChat-01-Provider配置.svg` → 替换后变为 `DeepChat-01-Provider配置.png` | DeepChat Provider 配置 |
 | `ZCode-01-添加自定义提供商.svg` → 替换后变为 `ZCode-01-添加自定义提供商.png` | ZCode 添加自定义提供商（中转） |
 | `ZCode-02-对话成功.svg` → 替换后变为 `ZCode-02-对话成功.png` | ZCode 对话成功 |
 | `DeepSeekHarness-01-添加自定义Provider.svg` → 替换后变为 `DeepSeekHarness-01-添加自定义Provider.png` | DeepSeek Harness Models 页添加自定义 Provider |

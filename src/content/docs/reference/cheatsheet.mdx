@@ -28,8 +28,11 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 | 写代码 | [Claude Code](/coding/claude-code/) / [Codex](/coding/codex/) / [Cursor](/coding/cursor/) / [ZCode](/coding/zcode/) |
 | Agent | [OpenClaw](/agents/openclaw/) / [Hermes](/agents/hermes/) / [OpenCode](/agents/opencode/) / [DeepSeek Harness](/agents/deepseek-harness/) |
 | 聊天 / 生图 | [Cherry Studio](/clients/cherry-studio/) / [生图 4K](/clients/cherry-studio-image/) |
+| 自己写代码调 API | [自己封装请求](/reference/api-requests/) |
 
-## 4K 参数速查
+## 4K 参数速查（仅 Gemini 助手生图）
+
+`gpt-image-*` 走绘画页，调不出该参数。Gemini 助手自定义参数：
 
 ```json
 // imageConfig
@@ -40,6 +43,8 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 // responseModalities
 ["TEXT", "IMAGE"]
 ```
+
+完整对照见 [Cherry Studio 生图](/clients/cherry-studio-image/)。
 
 ## 下载入口（官方）
 

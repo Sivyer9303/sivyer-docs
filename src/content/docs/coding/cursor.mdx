@@ -87,18 +87,18 @@ npx @cometix/ccursor uninstall # 卸载并还原补丁
 | API Key | `sk-...` |
 | 模型 ID | 服务商定价页上的完整模型名 |
 
-![Cursor++ 侧边栏与供应商配置](/screenshots/Cursor-01-Cursor++侧边栏配置.svg)
+![Cursor++ 侧边栏与供应商配置](/screenshots/Cursor-01-Cursor++侧边栏配置.png)
 
-![Cursor++ 添加模型后对话成功](/screenshots/Cursor-02-BYOK对话成功.svg)
+![Cursor++ 添加模型后对话成功](/screenshots/Cursor-02-BYOK对话成功.png)
 
-### 可选：手改 `~/.ccursor/providers.json`
+### 可选：手改用户级配置
 
-一般用侧边栏即可。需要备份或批量改时，配置在用户目录：
+一般用侧边栏即可。需要备份或批量改时，配置在用户目录（路径约定见 [这是什么](/getting-started/overview/#配置文件路径约定)）：
 
-| 文件 | 用途 |
-| --- | --- |
-| `~/.ccursor/providers.json` | 服务商、Key、模型 |
-| `~/.ccursor/routes.json` | BYOK 开关与路由白名单 |
+| 文件 | macOS / Linux | Windows |
+| --- | --- | --- |
+| 服务商、Key、模型 | `~/.ccursor/providers.json` | `%USERPROFILE%\.ccursor\providers.json` |
+| BYOK 开关与路由白名单 | `~/.ccursor/routes.json` | `%USERPROFILE%\.ccursor\routes.json` |
 
 OpenAI 兼容中转示例（字段以你安装的 Cursor++ 版本为准，可先在面板里加一条再对照文件）：
 

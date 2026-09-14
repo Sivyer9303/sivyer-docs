@@ -72,7 +72,10 @@ claude
 
 ## 方式三：手动配置自定义 API / 中转
 
-编辑 `~/.claude/settings.json`（Windows 在用户目录 `.claude\settings.json`）：
+编辑用户级配置（路径约定见 [这是什么](/getting-started/overview/#配置文件路径约定)）：
+
+- macOS / Linux：`~/.claude/settings.json`
+- Windows：`%USERPROFILE%\.claude\settings.json`
 
 ```json
 {
@@ -130,12 +133,12 @@ claude
 
 </Steps>
 
-![Claude Code 成功对话](/screenshots/ClaudeCode-01-对话成功.svg)
+![Claude Code 成功对话](/screenshots/ClaudeCode-01-对话成功.png)
 
 ## 常见问题
 
 - **想用订阅却一直走 Key / 中转**：环境变量与订阅登录冲突时，变量优先；清掉自定义 `ANTHROPIC_*` 后 `/logout` 再 `/login`  
-- **提示需要登录 / Onboarding（中转场景）**：在 `~/.claude/settings.json` 的 `env` 中增加 `"hasCompletedOnboarding": "true"`，保存后新开终端再试  
+- **提示需要登录 / Onboarding（中转场景）**：在用户级 `settings.json`（`~/.claude/settings.json` / Windows：`%USERPROFILE%\.claude\settings.json`）的 `env` 中增加 `"hasCompletedOnboarding": "true"`，保存后新开终端再试  
 - **401**：Key 错误或未启用  
 - **403 无权访问分组**：重建 Key 并选择 Claude 相关分组  
 - **想回官方却仍走中转**：检查 settings.json / CC Switch 是否仍启用自定义供应商  

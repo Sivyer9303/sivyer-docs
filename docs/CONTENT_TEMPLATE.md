@@ -37,6 +37,12 @@ import SponsorBanner from '../../components/SponsorBanner.astro';
 - `{{API_BASE_URL}}/v1`
 - `{{MODEL_NAME}}`
 
+## 配置路径
+
+- 用户级配置用 `~/xxx` 表示主目录；首次出现或关键步骤旁补 Windows：`%USERPROFILE%\xxx`
+- 示例：`~/.claude/settings.json`（Windows：`%USERPROFILE%\.claude\settings.json`）
+- 终端命令分系统时用 Tabs：`macOS / Linux` 与 `Windows PowerShell`
+
 ## 截图
 
 截图统一放在 `public/screenshots/`（**中文文件名**），完整清单见该目录 `README.md`。  
@@ -51,4 +57,4 @@ import SponsorBanner from '../../components/SponsorBanner.astro';
 
 ## 侧边栏分组
 
-见 `astro.config.mjs`：开始使用 / 基础功能安装 / 配置管家 / AI 编程助手（含 CLI 与桌面版） / Agent 专区 / 桌面聊天客户端 / FAQ / 参考。
+见 `astro.config.mjs`：开始使用 / 基础功能安装 / 配置管家 / AI 编程助手（含 CLI 与桌面版） / Agent 专区 / 桌面聊天客户端 / FAQ / 参考（含协议说明、自己封装请求）。

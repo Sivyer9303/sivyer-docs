@@ -32,14 +32,22 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 
 ### Gemini
 
-- 适用：Gemini CLI、部分对话生图  
+- 适用：Gemini CLI、部分对话客户端  
 - 字段名随客户端变化，优先用 CC Switch  
+- **Cherry 4K 生图**另见下一节「Gemini 对话生图」  
 
 ### OpenAI Images
 
 - 路径常见：`/v1/images/generations`  
-- 适用：Cherry Studio「绘画」页  
-- 需将模型端点类型设为图像生成  
+- 典型模型：`gpt-image-1`、`gpt-image-2`  
+- 适用：Cherry Studio **「绘画」** 页  
+- 需将模型端点类型设为 **图像生成（OpenAI）**；**不要**当助手对话模型用  
+
+### Gemini 对话生图（含 4K）
+
+- 在对话 / 多模态链路里出图，常用自定义参数 `imageConfig.imageSize`（`1K`/`2K`/`4K`）  
+- 适用：Cherry **助手**；端点保持对话类，不要设成「图像生成（OpenAI）」  
+- 步骤见 [Cherry Studio 生图](/clients/cherry-studio-image/)  
 
 ## 工具 → 协议（速查）
 
@@ -49,7 +57,8 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 | Codex | OpenAI Responses（或经转换） |
 | Cursor / Chatbox | OpenAI Chat |
 | Cherry 聊天 | NewAPI 多协议 |
-| Cherry 绘画 | OpenAI Images |
+| Cherry 绘画 | OpenAI Images（`gpt-image-*`） |
+| Cherry 助手 4K 生图 | Gemini 对话生图 + `imageConfig` |
 | OpenClaw / Hermes / OpenCode | 多为 OpenAI 兼容或由 CC Switch 写入 |
 
 ## 填写 Base URL 的经验法则

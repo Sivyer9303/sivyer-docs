@@ -46,13 +46,16 @@ openclaw onboard
 
 </Steps>
 
-CC Switch 通常写入 `~/.openclaw/openclaw.json`（JSON5）中的 provider 相关字段。
+CC Switch 通常写入用户级 `openclaw.json`（JSON5）中的 provider 相关字段：
 
-![CC Switch 中选中 OpenClaw Tab / 配置成功](/screenshots/OpenClaw-01-CCSwitch中选中Tab.svg)
+- macOS / Linux：`~/.openclaw/openclaw.json`
+- Windows：`%USERPROFILE%\.openclaw\openclaw.json`
+
+![CC Switch 中选中 OpenClaw Tab / 配置成功](/screenshots/OpenClaw-01-CCSwitch中选中Tab.png)
 
 ## 方式二：手动配置
 
-编辑 `~/.openclaw/openclaw.json`，在 models/providers 一类字段中填入：
+编辑上述用户级 `openclaw.json`，在 models/providers 一类字段中填入：
 
 - base URL：`{{API_BASE_URL}}`  
 - api key：你的 Key  

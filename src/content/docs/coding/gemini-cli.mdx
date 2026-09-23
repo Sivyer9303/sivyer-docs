@@ -42,7 +42,11 @@ npm install -g @google/gemini-cli
 	官方通道的额度、地区可用性与条款以 Google 当前说明为准；若登录页无法打开，先检查网络与账号地区限制。
 </Aside>
 
-## 方式二：CC Switch 配自定义 API / 中转
+## 方式二：用 AI Toolbox 配自定义 API / 中转（推荐）
+
+用 [AI Toolbox](/config-manager/ai-toolbox/)：进入 Gemini 页面，API 格式选 **Gemini Native**，Base URL 填 `{{API_BASE_URL}}`。模型在卡片的 **模型列表** 里获取并设置，再 **应用**。
+
+也可以用 CC Switch：
 
 1. 在 [CC Switch](/config-manager/cc-switch/) 添加供应商  
 2. 勾选 **Gemini CLI**  
@@ -88,7 +92,7 @@ $env:GOOGLE_GEMINI_BASE_URL="{{API_BASE_URL}}"
 
 ## 常见问题
 
-- **想回官方**：去掉自定义 Base URL / 停用 CC Switch 中的 Gemini 供应商，重新走官方登录或官方 Key  
+- **想回官方**：去掉自定义 Base URL，停用 AI Toolbox 或 CC Switch 中的 Gemini 供应商，重新走官方登录或官方 Key  
 - **分组错误（中转）**：Key 需具备 Gemini 相关分组  
 - **404 / 模型不存在**：核对模型 ID  
 - **配置不生效**：确认环境变量文件已被加载，或重启终端  

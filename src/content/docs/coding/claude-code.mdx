@@ -41,7 +41,7 @@ claude --version
 ## 方式一：官方 Claude 订阅登录（推荐有订阅时）
 
 1. 确认账号已开通 **Pro / Max / Team / Enterprise**（免费版一般**不含** Claude Code；升级见 https://claude.ai/upgrade ）  
-2. 若以前配过中转，先清掉会抢登录态的变量，例如取消 `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_API_KEY`，或暂时关掉 [CC Switch](/config-manager/cc-switch/) 里 Claude Code 的自定义供应商  
+2. 若以前配过中转，先清掉会抢登录态的变量，例如取消 `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_API_KEY`，或暂时停用 [AI Toolbox](/config-manager/ai-toolbox/) / [CC Switch](/config-manager/cc-switch/) 里 Claude Code 的自定义供应商  
 3. 新开终端，进入项目目录，运行：
 
 ```bash
@@ -66,9 +66,11 @@ claude
 	登录时也可选 **Anthropic Console account**（API 按量计费），或在环境中提供官方 `ANTHROPIC_API_KEY`。这与「中转站 Key」不同：请求仍打官方 Anthropic，按 Console 账单计费。
 </Aside>
 
-## 方式二：用 CC Switch 配自定义 API / 中转
+## 方式二：用 AI Toolbox 配自定义 API / 中转（推荐）
 
-见 [CC Switch](/config-manager/cc-switch/)：添加供应商 → 勾选 Claude Code → 启用 → 新开终端运行 `claude`。
+见 [AI Toolbox](/config-manager/ai-toolbox/)：进入 Claude Code 页面，添加自定义渠道并保存。模型在卡片的 **模型列表** 里获取并设置，再 **应用**，新开终端运行 `claude`。
+
+也可以用 [CC Switch](/config-manager/cc-switch/)：添加供应商 → 勾选 Claude Code → 启用。同一工具只保留一个配置入口。
 
 ## 方式三：手动配置自定义 API / 中转
 
@@ -141,4 +143,4 @@ claude
 - **提示需要登录 / Onboarding（中转场景）**：在用户级 `settings.json`（`~/.claude/settings.json` / Windows：`%USERPROFILE%\.claude\settings.json`）的 `env` 中增加 `"hasCompletedOnboarding": "true"`，保存后新开终端再试  
 - **401**：Key 错误或未启用  
 - **403 无权访问分组**：重建 Key 并选择 Claude 相关分组  
-- **想回官方却仍走中转**：检查 settings.json / CC Switch 是否仍启用自定义供应商  
+- **想回官方却仍走中转**：检查 settings.json，以及 AI Toolbox / CC Switch 是否仍启用自定义供应商  

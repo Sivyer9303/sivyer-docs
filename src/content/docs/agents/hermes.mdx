@@ -40,9 +40,13 @@ hermes model
 ## 前置条件
 
 - API Key、`{{API_BASE_URL}}`、`{{MODEL_NAME}}`  
-- 建议配合 [CC Switch](/config-manager/cc-switch/)  
+- 建议配合 [AI Toolbox](/config-manager/ai-toolbox/)  
 
-## 方式一：CC Switch（推荐）
+## 方式一：AI Toolbox（推荐）
+
+进入 Hermes 页面添加供应商，Base URL 填 `{{API_BASE_URL}}`。模型不在添加时填写，保存后到卡片 **模型列表** 里拉取并设为默认，再 **应用**。详见 [AI Toolbox](/config-manager/ai-toolbox/)。
+
+也可以用 CC Switch：
 
 <Steps>
 
@@ -83,4 +87,4 @@ hermes chat -q "请只回复：配置成功"
 
 - **找不到命令**：检查 npm 全局 bin 是否在 PATH  
 - **provider 无效**：确认 Base URL 与协议匹配  
-- **Skills / MCP 丢失**：切换供应商后检查 CC Switch 是否应用了通用配置片段  
+- **Skills / MCP 丢失**：切换供应商后检查 AI Toolbox 或 CC Switch 是否应用了通用配置片段  

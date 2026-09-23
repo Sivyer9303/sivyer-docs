@@ -10,6 +10,7 @@ export default defineConfig({
 	integrations: [
 		screenshotReplacerDev(),
 		starlight({
+			favicon: '/favicon.png',
 			customCss: ['./src/styles/custom.css'],
 			plugins: [starlightThemeNova()],
 			title: 'AI 工具文档',
@@ -42,6 +43,7 @@ export default defineConfig({
 				{
 					label: '配置管家',
 					items: [
+						{ label: 'AI Toolbox', slug: 'config-manager/ai-toolbox' },
 						{ label: 'CC Switch', slug: 'config-manager/cc-switch' },
 						{ label: 'Codex++', slug: 'config-manager/codex-plus-plus' },
 					],

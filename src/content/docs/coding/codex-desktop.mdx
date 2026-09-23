@@ -19,8 +19,8 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 | 安装 | `npm install -g @openai/codex` | 官方桌面安装包 |
 | 日常入口 | 终端 `codex` | Codex App 窗口 |
 | 官方账号 | `codex login` | App 内 Sign in with ChatGPT |
-| 自定义供应商 | `~/.codex/config.toml`（Windows：`%USERPROFILE%\.codex\config.toml`）/ CC Switch | 同上（App：Settings → Configuration → Open config.toml） |
-| 图形化增强 | — | 可用 [Codex++](/config-manager/codex-plus-plus/) |
+| 自定义供应商 | `~/.codex/config.toml`（Windows：`%USERPROFILE%\.codex\config.toml`）/ [AI Toolbox](/config-manager/ai-toolbox/) | 同上（App 读取这份用户配置） |
+| 图形化配置 | [AI Toolbox](/config-manager/ai-toolbox/)（推荐） | 同上；也可另用 [Codex++](/config-manager/codex-plus-plus/) |
 
 下载页：https://developers.openai.com/codex/app  
 
@@ -38,11 +38,11 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 | --- | --- |
 | **ChatGPT 官方登录** | 已有 ChatGPT / Codex 订阅权益 |
 | **官方 OpenAI API Key** | 使用 platform.openai.com 按量 Key |
-| **自定义网关 / Codex++** | 中转站或自建 Responses 兼容端点 |
+| **自定义网关 / AI Toolbox** | 中转站或自建 Responses 兼容端点 |
 
 ## 方式一：官方 ChatGPT 账号（推荐有订阅时）
 
-1. 确认没有启用会劫持请求的自定义供应商（Codex++ 里不要开「纯 API」指向中转；用户级 `config.toml` 不要把 `model_provider` 指到自定义网关）  
+1. 确认没有启用会劫持请求的自定义供应商（AI Toolbox 里不要应用指向中转的 Codex 供应商；Codex++ 里不要开「纯 API」；用户级 `config.toml` 不要把 `model_provider` 指到自定义网关）  
 2. 打开 Codex 桌面 App  
 3. 在登录界面选择 **Sign in with ChatGPT**，浏览器完成登录  
 4. 回到 App，新建任务做一次简单测试  
@@ -53,16 +53,17 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 想退出官方登录：在 App 的账号 / Settings 中 Sign out，或在终端执行 `codex logout`（与 CLI 共用登录缓存时会一起退出）。
 
-## 方式二：Codex++ 图形化配置自定义 API（推荐新手接中转）
+## 方式二：用 AI Toolbox 配自定义 API（推荐接中转）
 
-若你更想点选而不是手改 TOML，用 [Codex++](/config-manager/codex-plus-plus/)：
+桌面 App 与 CLI 共用用户级 `config.toml`。用 [AI Toolbox](/config-manager/ai-toolbox/) 写入即可：
 
-1. 安装 Codex++，并确认本机已有官方 Codex App  
-2. 在 Codex++ 添加供应商，接入模式选 **纯 API**（官方登录模式则选「官方登录」类选项，见 Codex++ 页）  
-3. 填写 Base URL、Key、模型  
-4. 保存并重启，再从 Codex++ 启动 Codex  
+1. 进入 Codex 页面，添加自定义渠道  
+2. OpenAI 兼容地址填 `{{API_BASE_URL}}/v1`  
+3. 在卡片 **模型列表** 里获取模型并 **设为主模型**  
+4. 点击 **应用**（只提供 Chat Completions 时用 **应用并代理**）  
+5. 完全退出并重新打开 Codex 桌面 App  
 
-详细字段说明见 Codex++ 专页。
+也可以用 [Codex++](/config-manager/codex-plus-plus/) 做图形化配置。同一份 Codex 配置只保留一个入口。详细字段见各自专页。
 
 ## 方式三：在桌面 App 中改 config.toml（自定义网关）
 

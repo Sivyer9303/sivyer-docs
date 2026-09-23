@@ -32,6 +32,11 @@
 | `创建Key-02-创建弹窗.svg` → 替换后变为 `创建Key-02-创建弹窗.png` | 创建弹窗总览 |
 | `创建Key-03-定价页分组提示.svg` → 替换后变为 `创建Key-03-定价页分组提示.png` | 定价页上的分组提示 |
 | `创建Key-04-分组下拉框.svg` → 替换后变为 `创建Key-04-分组下拉框.png` | 创建 Key 时的分组下拉框 |
+| `AIToolbox-01-工具入口.svg` → 替换后变为 `AIToolbox-01-工具入口.png` | AI Toolbox 按工具进入配置页（圈出 Claude Code / Codex 等入口） |
+| `AIToolbox-02-添加供应商.svg` → 替换后变为 `AIToolbox-02-添加供应商.png` | 添加供应商入口（渠道、名称、Base URL、API Key，不含模型目录） |
+| `AIToolbox-03-应用成功.svg` → 替换后变为 `AIToolbox-03-应用成功.png` | 保存供应商：只填渠道、名称、Key 和 Base URL |
+| `AIToolbox-04-获取模型.svg` → 替换后变为 `AIToolbox-04-获取模型.png` | 展开供应商卡片的模型列表，点击「获取模型」 |
+| `AIToolbox-05-设置模型.svg` → 替换后变为 `AIToolbox-05-设置模型.png` | 把拉到的模型设为主模型，或在 Claude Code 模型映射里指定 |
 | `CCSwitch-Tab切换位置.png` | CC Switch 顶部工具 Tab 切换位置（圈出 Tab 栏） |
 | `CCSwitch-02-添加供应商面板.svg` → 替换后变为 `CCSwitch-02-添加供应商面板.png` | 已选中某工具 Tab 后的添加供应商面板 |
 | `CCSwitch-03-启用供应商成功.svg` → 替换后变为 `CCSwitch-03-启用供应商成功.png` | 在该 Tab 下启用供应商成功 |
@@ -49,8 +54,6 @@
 | `OpenClaw-01-CCSwitch中选中Tab.svg` → 替换后变为 `OpenClaw-01-CCSwitch中选中Tab.png` | CC Switch 中选中 OpenClaw Tab / 配置成功 |
 | `Cherry-01-NewAPI配置页.svg` → 替换后变为 `Cherry-01-NewAPI配置页.png` | Cherry Studio NewAPI 配置页 |
 | `Cherry生图-01-端点类型图像生成.svg` → 替换后变为 `Cherry生图-01-端点类型图像生成.png` | 端点类型改为图像生成 |
-| `Cherry生图-02-自定义参数4K.svg` → 替换后变为 `Cherry生图-02-自定义参数4K.png` | 自定义参数 imageConfig=4K |
-| `Cherry生图-03-查看图片分辨率.svg` → 替换后变为 `Cherry生图-03-查看图片分辨率.png` | 出图后查看分辨率属性 |
 | `ZCode-01-添加自定义提供商.svg` → 替换后变为 `ZCode-01-添加自定义提供商.png` | ZCode 添加自定义提供商（中转） |
 | `ZCode-02-对话成功.svg` → 替换后变为 `ZCode-02-对话成功.png` | ZCode 对话成功 |
 | `DeepSeekHarness-01-添加自定义Provider.svg` → 替换后变为 `DeepSeekHarness-01-添加自定义Provider.png` | DeepSeek Harness Models 页添加自定义 Provider |

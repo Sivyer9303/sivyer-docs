@@ -22,7 +22,7 @@ import SponsorBanner from '../../components/SponsorBanner.astro';
 
 ## 前置条件
 
-## 方式一：CC Switch / 图形界面配置（推荐）
+## 方式一：AI Toolbox（推荐）
 
 ## 方式二：手动配置
 
@@ -57,4 +57,4 @@ import SponsorBanner from '../../components/SponsorBanner.astro';
 
 ## 侧边栏分组
 
-见 `astro.config.mjs`：开始使用 / 基础功能安装 / 配置管家 / AI 编程助手（含 CLI 与桌面版） / Agent 专区 / 桌面聊天客户端 / FAQ / 参考（含协议说明、自己封装请求）。
+见 `astro.config.mjs`：开始使用 / 基础功能安装 / 配置管家（AI Toolbox、CC Switch、Codex++） / AI 编程助手（含 CLI 与桌面版） / Agent 专区 / 桌面聊天客户端 / FAQ / 参考（含协议说明、自己封装请求）。

@@ -31,9 +31,13 @@ openclaw onboard
 ## 前置条件
 
 - API Key 与 `{{API_BASE_URL}}`  
-- 建议先装好 [CC Switch](/config-manager/cc-switch/)  
+- 建议先装好 [AI Toolbox](/config-manager/ai-toolbox/)  
 
-## 方式一：CC Switch（推荐）
+## 方式一：AI Toolbox（推荐）
+
+进入 OpenClaw 页面添加供应商，Base URL 填 `{{API_BASE_URL}}`。模型不在添加时填写，保存后到卡片 **模型列表** 里获取并设为主模型，再 **应用**。详见 [AI Toolbox](/config-manager/ai-toolbox/)。
+
+也可以用 CC Switch：
 
 <Steps>
 
@@ -85,5 +89,5 @@ openclaw gateway --port 18789
 - **模型报错**：确认分组与模型名  
 
 <Aside type="tip">
-	OpenClaw 与 Hermes 可并存：一个偏网关编排，一个偏 Agent 运行时。可用 CC Switch 统一管 Key。
+	OpenClaw 与 Hermes 可并存：一个偏网关编排，一个偏 Agent 运行时。用 AI Toolbox 统一管 Key。
 </Aside>

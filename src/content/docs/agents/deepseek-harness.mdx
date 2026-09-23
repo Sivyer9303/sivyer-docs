@@ -105,7 +105,11 @@ Add-Content -Path "$env:USERPROFILE\.dsh\.env" -Value 'DEEPSEEK_API_KEY=sk-你�
 
 官方默认 provider 一般为 `deepseek-official`；具体默认模型以当前版本文档为准。
 
-## 方式二：自定义 Provider 接中转（DeepSeek / GLM）
+## 方式二：用 AI Toolbox 接中转（推荐）
+
+用 [AI Toolbox](/config-manager/ai-toolbox/) 写入 DeepSeek Harness 的供应商：进入 dsh 页面，添加自定义渠道，Base URL 按 OpenAI 兼容填 `{{API_BASE_URL}}/v1`。模型在卡片的 **模型列表** 里拉取并设为默认，再 **应用**。
+
+下面是在 Web UI 里手填的步骤。
 
 ### 前置
 
@@ -113,7 +117,7 @@ Add-Content -Path "$env:USERPROFILE\.dsh\.env" -Value 'DEEPSEEK_API_KEY=sk-你�
 - OpenAI 兼容地址：`{{API_BASE_URL}}/v1`  
 - 至少一个模型 ID：`{{MODEL_NAME}}`（例如 `deepseek-v4-flash`、`glm-4.7`，具体以定价页为准）
 
-### 在 Web UI 中添加（推荐）
+### 在 Web UI 中添加
 
 <Steps>
 

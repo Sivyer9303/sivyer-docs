@@ -1,6 +1,6 @@
 ---
 title: OpenCode
-description: 安装 OpenCode，并通过 CC Switch 或手动方式接入 API 网关。
+description: 安装 OpenCode，并通过 AI Toolbox 或手动方式接入 API 网关。
 ---
 
 import SponsorBanner from '../../../components/SponsorBanner.astro';
@@ -25,9 +25,13 @@ npm install -g opencode-ai
 ## 前置条件
 
 - API Key 与 `{{API_BASE_URL}}`  
-- 推荐先配置 [CC Switch](/config-manager/cc-switch/)  
+- 推荐先配置 [AI Toolbox](/config-manager/ai-toolbox/)  
 
-## 方式一：CC Switch（推荐）
+## 方式一：AI Toolbox（推荐）
+
+进入 OpenCode 的供应商列表添加渠道并保存；OpenAI 兼容地址常见为 `{{API_BASE_URL}}/v1`。模型在卡片的 **模型列表** 里获取并设置，再按该工具的方式启用。详见 [AI Toolbox](/config-manager/ai-toolbox/)。
+
+也可以用 CC Switch：
 
 <Steps>
 
@@ -61,5 +65,5 @@ npm install -g opencode-ai
 
 ## 常见问题
 
-- **与 Claude Code 配置互相覆盖**：尽量用 CC Switch 统一管理，避免手改多处  
+- **与 Claude Code 配置互相覆盖**：尽量用 AI Toolbox 统一管理，避免手改多处  
 - **模型名错误**：与服务商列表保持一致  

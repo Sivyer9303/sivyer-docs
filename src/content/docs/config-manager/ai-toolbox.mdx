@@ -1,0 +1,263 @@
+---
+title: AI Toolbox
+description: 使用 AI Toolbox 统一管理 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw、Hermes 等工具的供应商，并在协议不一致时走本机网关。
+---
+
+import SponsorBanner from '../../../components/SponsorBanner.astro';
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<SponsorBanner />
+
+## 适合谁
+
+同时使用多个 CLI / Agent（Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw、Hermes、DeepSeek Harness 等）时，用 AI Toolbox 可以：
+
+- 在各自工具页面里管理 Base URL、API Key 和模型  
+- 点一次 **应用**，把当前供应商写入该工具自己的配置  
+- 上游协议和 CLI 原生协议不一致时，用内置本机网关做转换  
+- 顺带管理 MCP、Skills，以及在工具之间复制已配好的供应商  
+
+项目：https://github.com/coulsontl/ai-toolbox  
+发布页：https://github.com/coulsontl/ai-toolbox/releases  
+
+| | AI Toolbox | CC Switch | Codex++ |
+| --- | --- | --- | --- |
+| 侧重 | 多 CLI / Agent，含本机协议转换 | 多 CLI 切换供应商 | Codex 桌面端增强与启动 |
+| 典型对象 | Claude Code、Codex CLI、Gemini CLI、OpenCode、OpenClaw、Hermes、DeepSeek Harness、Kimi、Grok、Pi 等 | Claude Code、Codex、Gemini、OpenCode、OpenClaw、Hermes 等 | Codex App |
+
+同一工具只保留一个配置入口。AI Toolbox、[CC Switch](/config-manager/cc-switch/) 和 [Codex++](/config-manager/codex-plus-plus/) 都会写同一份配置，后写入的一方会覆盖先前的配置。
+
+## 安装
+
+<Tabs>
+<TabItem label="macOS">
+
+**Homebrew（推荐）：**
+
+```bash
+brew tap coulsontl/ai-toolbox https://github.com/coulsontl/ai-toolbox
+brew install --cask coulsontl/ai-toolbox/ai-toolbox
+sudo xattr -rd com.apple.quarantine /Applications/AI\ Toolbox.app
+```
+
+升级与卸载：
+
+```bash
+brew upgrade --cask coulsontl/ai-toolbox/ai-toolbox
+brew uninstall --cask coulsontl/ai-toolbox/ai-toolbox
+```
+
+也可以到 [Releases](https://github.com/coulsontl/ai-toolbox/releases) 下载 `.dmg`，拖入「应用程序」。若系统提示「应用程序已损坏」，在终端执行上面的 `xattr` 命令后再打开。
+
+</TabItem>
+<TabItem label="Windows">
+
+1. 打开 [Releases](https://github.com/coulsontl/ai-toolbox/releases)
+2. 下载 `.msi`（推荐）或 `.exe`
+3. 安装后从开始菜单启动 **AI Toolbox**
+
+**Scoop：**
+
+```bash
+scoop bucket add ai-toolbox https://github.com/coulsontl/ai-toolbox
+scoop install ai-toolbox/ai-toolbox
+```
+
+升级时先刷新 bucket，再升级应用：
+
+```bash
+scoop update
+scoop update ai-toolbox
+```
+
+通过 Scoop 安装时，应用内自动更新不可用，请用上面的 `scoop update ai-toolbox` 升级。
+
+</TabItem>
+<TabItem label="Linux">
+
+到 [Releases](https://github.com/coulsontl/ai-toolbox/releases) 下载：
+
+- Debian / Ubuntu：`.deb`
+- 其他发行版：`.AppImage`（下载后赋予执行权限再运行）
+
+</TabItem>
+</Tabs>
+
+至少成功打开过一次应用，再去做下面的配置。若之后要用 `aitoolbox://` 链接导入，这一步也会让系统注册该协议。
+
+## 先认识界面
+
+打开后按工具进入各自的配置页（常见有 OpenCode、Claude Code、Codex、Gemini、OpenClaw、Hermes、DeepSeek Harness 等，以你安装的版本为准）。
+
+**不同工具在不同页面里操作。**  
+要给 Codex 配中转，就进入 **Codex** 页面再添加供应商；在 Claude Code 页面里添加的供应商不会写到 Codex。
+
+每个工具页通常能看到：
+
+- 当前配置文件路径，以及 **打开文件夹**  
+- **添加供应商**  
+- 供应商卡片；当前生效的那一张会标成 **已应用**，其余卡片上有 **应用**  
+
+右侧或顶部还有 **Skills**、**MCP**、**网关**、**设置**。接中转站时，先把供应商配好并应用；协议对不上时再看下文的本机网关。
+
+![AI Toolbox 按工具进入配置页](/screenshots/AIToolbox-01-工具入口.png)
+
+## 前置条件
+
+- 已有 `{{API_BASE_URL}}` 与 API Key  
+- 模型名 `{{MODEL_NAME}}` 与服务商列表完全一致  
+- 已安装你要配置的目标工具（可先装 AI Toolbox，再按需装各 CLI）
+
+## 手动添加供应商（推荐）
+
+1. 打开 AI Toolbox，进入目标工具页面  
+2. 点击 **添加供应商**  
+3. 模式选 **自定义渠道**（要用官方订阅时再选「官方订阅」，见文末）  
+4. 只填下面表格里的渠道、名称、API 格式、Base URL 和 API Key，然后保存  
+5. 模型不在这个弹窗里配。保存后按下一节，在供应商卡片的 **模型列表** 里获取并设置  
+6. 模型设好后，在该卡片上点击 **应用**  
+7. 卡片显示 **已应用** 后，**新开终端** 再启动对应 CLI  
+
+![添加自定义渠道供应商](/screenshots/AIToolbox-02-添加供应商.png)
+
+![保存供应商：只填渠道、名称、Key 和 Base URL](/screenshots/AIToolbox-03-应用成功.png)
+
+<Aside type="caution" title="容易配错的一点">
+	**应用** 写入的是当前这个工具页面的配置。页面选错时，看起来像配好了，实际改的是另一个工具。  
+	添加供应商时看到的「模型名称」不是模型目录。可用模型在卡片上的 **模型列表** 里维护，改完会立刻保存。
+</Aside>
+
+### Claude Code
+
+| 字段 | 填写 |
+| --- | --- |
+| 供应商名称 | 自定义，如 `我的网关` |
+| API 格式 | 中转站提供 Anthropic 兼容时选 **Anthropic Messages** |
+| Base URL | `{{API_BASE_URL}}`（Anthropic 这里一般**不要**加 `/v1`，末尾不要多 `/`） |
+| API Key | `sk-...`（不要手写 `Bearer ` 前缀） |
+
+应用后，新开终端运行 `claude`。配置写在用户级 `~/.claude/settings.json`（Windows：`%USERPROFILE%\.claude\settings.json`）。
+
+### Codex
+
+| 字段 | 填写 |
+| --- | --- |
+| 供应商名称 | 自定义，如 `我的网关` |
+| API 格式 | 网关支持 Responses 时选 **OpenAI Responses**；只提供 Chat Completions 时选 **OpenAI Chat Completions** |
+| Base URL | `{{API_BASE_URL}}/v1`（OpenAI Chat / Responses 兼容渠道通常要以 `/v1` 结尾；应用若提示缺少该后缀，按提示补上。末尾不要多 `/`） |
+| API Key | `sk-...` |
+
+选 **OpenAI Chat Completions** 时，Codex 原生走的是 Responses。保存后若卡片提供 **应用并代理**，用它而不是普通 **应用**：请求会先到本机网关，再转到你的 Base URL。先到 **网关** 页面把网关启动起来。
+
+应用后，新开终端运行 `codex`。配置写在用户级 `~/.codex/config.toml`（Windows：`%USERPROFILE%\.codex\config.toml`）。Codex 桌面版若读取同一份用户配置，也会跟着变；这时就不要再让 [Codex++](/config-manager/codex-plus-plus/) 改同一份文件。
+
+### 其他工具
+
+OpenCode、Gemini CLI、OpenClaw、Hermes、DeepSeek Harness、Kimi、Grok、Pi、Claude Desktop 同样是：进入对应页面 → **添加供应商** → 填名称、API 格式、Base URL、Key → 保存。模型到卡片上的 **模型列表** 再设。
+
+| 工具 | Base URL 习惯 |
+| --- | --- |
+| Gemini CLI（Gemini 原生） | `{{API_BASE_URL}}`，API 格式选 **Gemini Native** |
+| OpenCode | 按所选 SDK。OpenAI 兼容常见 `{{API_BASE_URL}}/v1`；Anthropic 兼容按页面提示带版本路径 |
+| OpenClaw / Hermes / DeepSeek Harness | `{{API_BASE_URL}}` |
+| 页面提示「需要网关」 | 先启动 **网关**，再点 **应用并代理** |
+
+## 获取并设置模型
+
+模型和供应商是两步。供应商保存后，展开该卡片上的 **模型列表**（列表为 0 时 CLI 里选不到模型）。
+
+### 获取模型
+
+1. 在供应商卡片上展开 **模型列表**  
+2. 点击 **获取模型**（Claude Code 上是 **获取模型列表**；Hermes、DeepSeek Harness 上是 **拉取模型**）  
+3. 等列表出现。名称应与服务商定价页里的 `{{MODEL_NAME}}` 一致  
+4. 拉不到时，点 **添加模型**，把上游模型 ID 手工填成 `{{MODEL_NAME}}`
+
+![在模型列表里获取上游模型](/screenshots/AIToolbox-04-获取模型.png)
+
+### 设置要用的模型
+
+拉到列表之后，还要指定这个工具实际用哪一个：
+
+1. 在 **模型列表** 里找到 `{{MODEL_NAME}}`  
+2. Codex、OpenClaw、OpenCode、Grok、Pi 等：对该模型点 **设为主模型**（有的工具写作 **设为默认**）  
+3. Claude Code：打开 **模型映射**，把 Sonnet / Opus / Haiku 的「实际请求模型」选成 `{{MODEL_NAME}}`；也可以点 **一键设置**，用同一个模型填满各角色  
+4. 回到供应商卡片，点击 **应用**，再新开终端
+
+![把拉到的模型设成当前工具使用的模型](/screenshots/AIToolbox-05-设置模型.png)
+
+一个工具配好后，可以在供应商卡片上点 **分享**，选择另一个目标工具，再点 **导入到本机**。这是一次复制：之后修改源供应商的 Key 或模型，不会自动同步到已导入的副本。导入后到目标工具页面再获取模型并 **应用**。
+
+## 从 CC Switch 迁过来
+
+已经在 [CC Switch](/config-manager/cc-switch/) 里配过供应商时，可以整批带进来，不必逐个手填。
+
+1. 在目标工具页面找到 **从 CC Switch 导入**  
+2. 勾选要带入的供应商，确认导入  
+3. 导入后核对 Base URL、Key 和模型，再点 **应用**  
+4. 到 CC Switch 里停用同一工具的自定义供应商，避免两边同时写配置  
+
+AI Toolbox 读取的是本机 CC Switch 数据库 `~/.cc-switch/cc-switch.db`（Windows：`%USERPROFILE%\.cc-switch\cc-switch.db`）。找不到该文件时，先用 CC Switch 成功保存过一次供应商，或改用上面的手动添加。
+
+## 协议不一致时用本机网关
+
+CLI 的原生协议和中转站实际协议不同时（常见是 Codex 要 Responses，站点只提供 Chat Completions），直接 **应用** 会 404 或返回无法解析的内容。AI Toolbox 的 **网关** 会在本机做协议转换，再转发到你填写的 Base URL。
+
+1. 打开 **网关**，启动网关  
+2. 回到工具页面，确认该供应商的 **API 格式** 选的是站点真实协议  
+3. 点击 **应用并代理**  
+4. 新开终端，用对应 CLI 发一条测试消息  
+
+官方订阅走 CLI 自己的登录态，不经过这条代理。要切回官方账号时，把该工具的模式改成 **官方订阅** 再 **应用**。
+
+## 用链接导入
+
+AI Toolbox 注册了 `aitoolbox://` 协议。收到可信来源的导入链接时：
+
+1. 确认本机已安装并打开过 AI Toolbox  
+2. 在浏览器中打开链接；系统询问是否打开 AI Toolbox 时选择允许  
+3. 在确认窗口核对工具、名称、地址、Key 和模型  
+4. 点击 **导入** 后才会写入；取消则不会改配置  
+5. 到对应工具页面点击 **应用**
+
+链接里是明文 API Key，只应来自你信任的人和你自己的另一台设备。
+
+## 验证
+
+1. 供应商卡片显示 **已应用**  
+2. 新开一个终端，启动对应 CLI（不要复用配置前已经打开的窗口）  
+3. 发送一条测试消息  
+4. （可选）在服务商控制台查看是否有新用量  
+
+具体命令见各工具章节，例如 [Claude Code](/coding/claude-code/)、[Codex CLI](/coding/codex/)、[OpenClaw](/agents/openclaw/)、[Hermes](/agents/hermes/)。
+
+## 常见问题
+
+**macOS 提示「应用程序已损坏」**  
+执行：
+
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/AI\ Toolbox.app
+```
+
+**点了应用，CLI 仍走旧配置**  
+确认 **已应用** 出现在正确的工具页面；关掉旧终端再开。同时开着 CC Switch 或 Codex++ 时，后保存的一方会覆盖这里的配置。
+
+**401 / 无权限**  
+Key 不完整，或分组不含当前模型。
+
+**404 / 路径不对**  
+Claude Code 的 Anthropic Base URL 用 `{{API_BASE_URL}}`；Codex 的 OpenAI 兼容地址用 `{{API_BASE_URL}}/v1`。末尾不要多余 `/`，也不要把 `/chat/completions` 写进 Base URL。可先用 [验证页 curl](/getting-started/verify/) 测网关。
+
+**模型名无效 / CLI 里没有模型**  
+模型不在添加供应商时填写。展开卡片上的 **模型列表**，先 **获取模型**，再 **设为主模型**（Claude Code 则在 **模型映射** 里指定）。名称必须与定价页完整模型名一致。
+
+**保存了但 CLI 没变**  
+保存只是记下这张供应商卡片。要点卡片上的 **应用**（或 **应用并代理**）才会写入该工具的配置文件。
+
+**和 CC Switch、Codex++ 一起用**  
+同一工具只留一个入口。从 CC Switch 导入完成后，停用 CC Switch 里对应供应商。Codex 桌面端若继续用 Codex++，就不要在 AI Toolbox 里再应用 Codex 供应商。
+
+<Aside type="tip">
+	配好后到具体工具章节做一次真实请求即可。Codex 桌面 App 与 CLI 共用这份配置，见 [Codex 桌面版](/coding/codex-desktop/)。
+</Aside>

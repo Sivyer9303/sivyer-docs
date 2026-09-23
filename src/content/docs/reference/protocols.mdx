@@ -22,7 +22,7 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 ### OpenAI Responses
 
 - 部分 Codex / 新 OpenAI 链路使用  
-- 若网关只提供 Chat Completions，可能需要 CC Switch Local Routing 做转换  
+- 若网关只提供 Chat Completions，可用 [AI Toolbox](/config-manager/ai-toolbox/) 的本机网关做协议转换，或使用 CC Switch Local Routing  
 
 ### Anthropic Messages
 
@@ -33,7 +33,7 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 ### Gemini
 
 - 适用：Gemini CLI、部分对话客户端  
-- 字段名随客户端变化，优先用 CC Switch  
+- 字段名随客户端变化，优先用 [AI Toolbox](/config-manager/ai-toolbox/)  
 - **Cherry 4K 生图**另见下一节「Gemini 对话生图」  
 
 ### OpenAI Images
@@ -59,7 +59,7 @@ import SponsorBanner from '../../../components/SponsorBanner.astro';
 | Cherry 聊天 | NewAPI 多协议 |
 | Cherry 绘画 | OpenAI Images（`gpt-image-*`） |
 | Cherry 助手 4K 生图 | Gemini 对话生图 + `imageConfig` |
-| OpenClaw / Hermes / OpenCode | 多为 OpenAI 兼容或由 CC Switch 写入 |
+| OpenClaw / Hermes / OpenCode | 多为 OpenAI 兼容，推荐用 AI Toolbox 写入 |
 
 ## 填写 Base URL 的经验法则
 
